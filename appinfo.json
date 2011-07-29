@@ -1,0 +1,11 @@
+{
+	"title": "Editah",
+	"id": "us.ryanhope.editah",
+	"version": "0.0.1",
+	"vendor": "Ryan Hope",
+	"type": "web",
+	"noDeprecatedStyles": true,
+	"main": "index.html",
+	"icon": "images/icon.png",
+	"uiRevision": 2,
+}
