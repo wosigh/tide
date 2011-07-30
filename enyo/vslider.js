@@ -33,41 +33,43 @@ enyo.kind({
 		}
 	},
 	renderPosition: function(inPercent) {
-		this.$.button.applyStyle("left",  inPercent + "%");
+		this.$.button.applyStyle("top",  inPercent + "%");
 	},
 	renderPositionDirect: function(inDomStyle, inPercent) {
-		inDomStyle.left = inPercent + "%";
+		inDomStyle.top = inPercent + "%";
 	},
 	canAnimate: function() {
 		return this.$.button.hasNode();
 	},
 	beginAnimation: function(inSender, inStart, inEnd) {
-		this.$.button.domStyles.left = inEnd + "%";
+		this.$.button.domStyles.top = inEnd + "%";
 		if (this.$.button.hasNode()) {
 			inSender.setNode(this.$.button.node);
 			inSender.style = this.$.button.node.style;
 		}
 		this.doBeginAnimation();
 	},
-	calcWidth: function() {
+	calcHeight: function() {
 		var n = this.$.bar.hasNode();
-		return n.offsetWidth;
+		return n.offsetHeight;
 	},
-	calcEventPosition: function(inX) {
+	calcEventPosition: function(inY) {
 		var o = this.$.bar.getOffset();
-		var x = inX - o.left;
-		return (x / this.calcWidth()) * (this.maximum - this.minimum) + this.minimum;
+		var y = inY - o.top;
+		this.log(inY, o.top, y / this.calcHeight())
+		return (y / this.calcHeight()) * (this.maximum - this.minimum) + this.minimum;
 	},
 	// drag processing
 	dragstartHandler: function(inSender, inEvent) {
 		this.handlingDrag = true;
-		this._width = this.calcWidth();
+		this._height = this.calcHeight();
 		this.$.button.setDown(true);
 		return true;
 	},
 	dragHandler: function(inSender, inEvent) {
 		if (this.handlingDrag) {
-			var p = this.calcEventPosition(inEvent.pageX);
+			var p = this.calcEventPosition(inEvent.pageY);
+			this.error(p)
 			this.dragChange = true;
 			this.setPositionImmediate(p);
 			this.dragChange = false;
@@ -94,7 +96,7 @@ enyo.kind({
 	clickHandler: function(inSender, e) {
 		if (this.tapPosition && (e.dispatchTarget != this.$.button)) {
 			this.$.animator.stop();
-			var p = this.calcEventPosition(e.pageX);
+			var p = this.calcEventPosition(e.pageY);
 			this._clicked = true;
 			this.setPosition(p);
 			if (!this.animatePosition) {
