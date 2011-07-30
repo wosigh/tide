@@ -6,17 +6,6 @@ enyo.kind({
   	prefs: new Prefs(),
   	
   	components: [
-  		{
-			kind: "AppMenu",
-			components: [
-				{
-					caption: "Theme",
-					components: [
-						,
-					]
-				},
-			]
-		},
 		{
 			kind: 'Toolbar',
 			name: 'toolbar',
