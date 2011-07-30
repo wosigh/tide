@@ -7,3 +7,6 @@ clean:
 prepare:
 	git submodule update --init --recursive
 	cd ace; npm install uglify-js
+	
+package: ace
+	palm-package -X excludes.txt .

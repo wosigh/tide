@@ -1,0 +1,36 @@
+/* Copyright 2009-2011 Hewlett-Packard Development Company, L.P. All rights reserved. */
+.enyo-vslider-button {
+	height: 40px;
+	width: 40px;
+	z-index: 50;
+	background: url(../images/slider-handle.png) left top no-repeat;
+	position: absolute;
+	margin: -14px -20px;
+}
+
+.enyo-vslider-button.enyo-button-down {
+	background-position-y: -40px;
+}
+
+.enyo-vslider {
+	/* 
+	FIXME: why in the heck does this work to properly position the progress
+	div inside this one?
+	*/
+	padding: 1px 0;
+	position:relative;
+	height: 100%;
+}
+
+.enyo-vslider-progress {
+	width: 10px;
+	height: 100%;
+	border-width: 4px 0px;
+	-webkit-border-image: url(../images/vslider-track.png) 4 0 4 0 repeat repeat;
+	margin: 0px 20px;
+	position:relative;
+}
+
+.enyo-vslider-inner {
+	margin: 0 -4px;
+}

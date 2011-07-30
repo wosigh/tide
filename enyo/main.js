@@ -58,7 +58,12 @@ enyo.kind({
 			]
 		},
 		{
-			kind: 'Editah.Editor', name: 'editor', flex: 1
+			kind: 'HFlexBox', components: [
+				{
+					kind: 'Editah.Editor', name: 'editor', flex: 1
+				},
+				{kind: "VSlider", style: "width: 40px; height: 100%", position: 50}
+			]
 		}
   	],
   	
@@ -87,7 +92,7 @@ enyo.kind({
   	
   	resizeHandler: function() {
   		this.$.editor.refresh(
-  			(window.innerWidth)+'px',
+  			(window.innerWidth-40)+'px',
   			(window.innerHeight-54)+'px',
   			this.prefs.get('fontSize')
 		)

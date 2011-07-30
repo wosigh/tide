@@ -37,7 +37,9 @@ enyo.depends(
 	
 	"models/prefs.js",
 	
-	"enyo/scrollbar-scroller.js",
+	"css/vslider.css",
+	
+	"enyo/vslider.js",
 	"enyo/editor.js",
 	"enyo/main.js"
 
