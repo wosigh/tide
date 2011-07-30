@@ -6,7 +6,7 @@ enyo.kind({
 	editor: null,
   	
   	components: [
-  		{kind: enyo.Control, allowHtml: true, name: 'editor', style: 'width: 100%; height: 100%;'}
+  		{kind: enyo.Control, allowHtml: true, name: 'editor'}
   	],
 	
 	rendered: function() {
@@ -29,8 +29,17 @@ enyo.kind({
 	},
 	
 	setTabSize: function(size) {
-		this.warn('Tab size:'+size)
 		this.editor.getSession().setTabSize(size)
+	},
+	
+	resizeRenderer: function() {
+		this.editor.resize()
+	},
+	
+	refresh: function(width,height,fontSize) {
+		this.$.editor.applyStyle('width',width)
+		this.$.editor.applyStyle('height',height)
+		this.setFontSize(fontSize)
 	}
 	
 })

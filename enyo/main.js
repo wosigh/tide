@@ -10,6 +10,7 @@ enyo.kind({
 			kind: 'Toolbar',
 			name: 'toolbar',
 			className: 'enyo-toolbar-light',
+			style: 'height: 48px;',
 			components: [
 				{flex:1},
 				{
@@ -53,7 +54,7 @@ enyo.kind({
 			]
 		},
 		{
-			kind: 'Editah.Editor', name: 'editor'
+			kind: 'Editah.Editor', name: 'editor', flex: 1
 		}
   	],
   	
@@ -72,6 +73,15 @@ enyo.kind({
   		this.prefs.set('theme',inValue)
   	},
   	
+  	resizeHandler: function() {
+  		this.$.editor.refresh(
+  			(window.innerWidth)+'px',
+  			(window.innerHeight-48)+'px',
+  			this.prefs.get('fontSize')
+		)
+  		this.$.editor.resizeRenderer()
+  	},
+  	
   	rendered: function() {
 		this.inherited(arguments)
 		enyo.setFullScreen(true)
@@ -79,9 +89,11 @@ enyo.kind({
 		this.$.editor.setTheme(this.prefs.get('theme'))
 		this.$.themePicker.setValue(this.prefs.get('theme'))
 		this.$.editor.setFontSize(this.prefs.get('fontSize'))
+		this.$.editor.resizeRenderer()
 		this.$.fontSizePicker.setValue(this.prefs.get('fontSize'))
 		this.$.editor.setTabSize(parseInt(this.prefs.get('tabSize')))
 		this.$.tabSizePicker.setValue(this.prefs.get('tabSize'))
+		window.addEventListener('resize', enyo.bind(this, 'resizeHandler'), false)
 		this.$.editor.setValue("\#!/usr/local/bin/python\n\nimport string, sys\n\n\
 # If no arguments were given, print a helpful message\n\
 if len(sys.argv)==1:\n\tprint 'Usage: celsius temp1 temp2 ...'\n\
