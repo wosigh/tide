@@ -12,6 +12,10 @@ enyo.kind({
 			className: 'enyo-toolbar-light',
 			style: 'height: 48px;',
 			components: [
+				{kind: "ToolButtonGroup", components: [
+		      		{caption: 'Undo', onclick: 'undo'},
+		      		{caption: 'Redo', onclick: 'redo'}
+				]},
 				{flex:1},
 				{
 			  		kind: "Picker",
@@ -57,6 +61,14 @@ enyo.kind({
 			kind: 'Editah.Editor', name: 'editor', flex: 1
 		}
   	],
+  	
+  	undo: function() {
+		this.$.editor.undo()
+  	},
+  	
+  	redo: function() {
+  		this.$.editor.redo()
+  	},
   	
   	changeTabSize: function(inSender, inValue) {
   		this.$.editor.setTabSize(parseInt(inValue))

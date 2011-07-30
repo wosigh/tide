@@ -40,6 +40,13 @@ enyo.kind({
 		this.$.editor.applyStyle('width',width)
 		this.$.editor.applyStyle('height',height)
 		this.setFontSize(fontSize)
-	}
+	},
 	
+	undo: function() {
+		this.editor.undo()
+	},
+	
+	redo: function() {
+		this.editor.redo()
+	}
 })
