@@ -49,6 +49,7 @@ enyo.kind({
 		}
 		this.editor.setShowPrintMargin(true)
 		this.editor.getSession().setUseWrapMode(true)
+		this.editor.setShowInvisibles(true)
 	},
 	
 	setTheme: function(theme) {

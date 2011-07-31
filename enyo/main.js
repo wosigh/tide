@@ -83,12 +83,7 @@ enyo.kind({
 			]
 		},
 		{
-			kind: 'HFlexBox', components: [
-				{
-					kind: 'Editah.Editor', name: 'editor', flex: 1
-				},
-				{kind: "VSlider", style: "width: 40px; height: 100%", position: 50}
-			]
+			kind: 'Editah.Editor', name: 'editor', flex: 1
 		}
   	],
   	
