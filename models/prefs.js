@@ -6,6 +6,11 @@ function Prefs() {
 		mode: 'python',
 		fontSize: '12px',
 		tabSize: '4',
+		useSoftTabs: true,
+		showInvisibles: true,//
+		showPrintMargin: true,
+		useWordWrap: true,
+		highlightActiveLine: true
 		
 	}
 	

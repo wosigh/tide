@@ -60,12 +60,13 @@ enyo.kind({
   		this.createComponent({
 			kind: 'Preferences',
 			name: 'preferences',
-			prefs: this.prefs
+			prefs: this.prefs,
+			onClose: 'refresh'
 		})
   	},
   	
   	preferences: function() {
-		this.$.preferences.openAtTopCenter()	
+		this.$.preferences.openAtTopCenter()
 	},
   	
   	undo: function() {
@@ -106,20 +107,27 @@ enyo.kind({
   		this.$.editor.resizeRenderer()
   	},
   	
+  	refresh: function() {
+  		this.$.editor.setTheme(this.prefs.get('theme'))
+  		this.$.editor.setFontSize(this.prefs.get('fontSize'))
+  		this.$.editor.setTabSize(parseInt(this.prefs.get('tabSize')))
+  		this.$.editor.showInvisibled(this.prefs.get('showInvisibles'))
+  		this.$.editor.showPrintMargin(this.prefs.get('showPrintMargin'))
+  		this.$.editor.highlightActiveLine(this.prefs.get('highlightActiveLine'))
+  		this.$.editor.useWordWrap(this.prefs.get('useWordWrap'))
+  		this.$.editor.useSoftTabs(this.prefs.get('useSoftTabs'))
+  		
+  		this.$.editor.setMode(this.prefs.get('mode'))
+		this.$.modePicker.setValue(this.prefs.get('mode'))
+  	},
+  	
   	rendered: function() {
 		this.inherited(arguments)
 		enyo.setFullScreen(true)
 		enyo.keyboard.setResizesWindow(true)
-		this.$.editor.setTheme(this.prefs.get('theme'))
-		//this.$.themePicker.setValue(this.prefs.get('theme'))
-		this.$.editor.setFontSize(this.prefs.get('fontSize'))
+		this.refresh()
 		this.$.editor.resizeRenderer()
-		//this.$.fontSizePicker.setValue(this.prefs.get('fontSize'))
-		this.$.editor.setTabSize(parseInt(this.prefs.get('tabSize')))
-		//this.$.tabSizePicker.setValue(this.prefs.get('tabSize'))
 		window.addEventListener('resize', enyo.bind(this, 'resizeHandler'), false)
-		this.$.modePicker.setValue(this.prefs.get('mode'))
-		this.$.editor.setMode(this.prefs.get('mode'))
 		this.showDemoDoc(this.prefs.get('mode'))
   	},
   	

@@ -47,9 +47,23 @@ enyo.kind({
 			'svg': new svg(),
 			'xml': new xml()
 		}
-		this.editor.setShowPrintMargin(true)
-		this.editor.getSession().setUseWrapMode(true)
-		this.editor.setShowInvisibles(true)
+		
+	},
+	
+	showInvisibled: function(value) {
+		this.editor.setShowInvisibles(value)
+	},
+	
+	showPrintMargin: function(value) {
+		this.editor.setShowPrintMargin(value)
+	},
+	
+	useWordWrap: function(value) {
+		this.editor.getSession().setUseWrapMode(value)
+	},
+	
+	highlightActiveLine: function(value) {
+		this.editor.setHighlightActiveLine(value)
 	},
 	
 	setTheme: function(theme) {
@@ -66,6 +80,10 @@ enyo.kind({
 	
 	setTabSize: function(size) {
 		this.editor.getSession().setTabSize(size)
+	},
+	
+	useSoftTabs: function(value) {
+		this.editor.getSession().setUseSoftTabs(value);
 	},
 	
 	setMode: function(mode) {

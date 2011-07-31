@@ -11,6 +11,10 @@ enyo.kind({
 		prefs: null
 	},
 	
+	events: {
+		onClose: ''
+	},
+	
 	components: [
 		{
 			layoutKind: "HFlexLayout",
@@ -125,13 +129,26 @@ enyo.kind({
 	],
 	
 	rendered: function() {
-		//this.$.libraryPath.setValue(this.prefs.get('libraryPath'))
-		//this.$.syncOnLaunch.setChecked(this.prefs.get('syncOnLaunch'))
+		this.$.themePicker.setValue(this.prefs.get('theme'))
+		this.$.fontSizePicker.setValue(this.prefs.get('fontSize'))
+		this.$.tabSizePicker.setValue(this.prefs.get('tabSize'))
+		this.$.useSoftTabs.setChecked(this.prefs.get('useSoftTabs'))
+		this.$.showInvisibles.setChecked(this.prefs.get('showInvisibles'))
+		this.$.showPrintMargin.setChecked(this.prefs.get('showPrintMargin'))
+		this.$.useWordWrap.setChecked(this.prefs.get('useWordWrap'))
+		this.$.highlightActiveLine.setChecked(this.prefs.get('highlightActiveLine'))
 	},
 	
 	closePrefs: function(inSender, inEvent) {
-		//this.prefs.set('libraryPath', this.$.libraryPath.value)
-		//this.prefs.set('syncOnLaunch', this.$.syncOnLaunch.checked)
+		this.prefs.set('theme', this.$.themePicker.value)
+		this.prefs.set('fontSize', this.$.fontSizePicker.value)
+		this.prefs.set('tabSize', this.$.tabSizePicker.value)
+		this.prefs.set('useSoftTabs', this.$.useSoftTabs.checked)
+		this.prefs.set('showInvisibles', this.$.showInvisibles.checked)
+		this.prefs.set('showPrintMargin', this.$.showPrintMargin.checked)
+		this.prefs.set('useWordWrap', this.$.useWordWrap.checked)
+		this.prefs.set('highlightActiveLine', this.$.highlightActiveLine.checked)
+		this.doClose()
 		this.close()
 	},
 
