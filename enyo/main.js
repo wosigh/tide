@@ -193,6 +193,30 @@ $output = "\\n\\nFactorial " . $num . " = " . nfact($num) . "\\n\\n";\necho $out
 \t */\n\tpublic static void main(String[] args) {\n\
 \t\tdouble d = Double.parseDouble("2.2250738585072012e-308");\n\n\
 \t\t// unreachable code\n\t\tSystem.out.println("Value: " + d);\n\t}\n}')
+		else if (mode == 'css')
+			this.$.editor.setValue('.text-layer {\n\tfont-family: Monaco, "Courier New", monospace;\n\tfont-size: 12px;\n\tcursor: text;\n}')
+		else if (mode == 'scss')
+		this.$.editor.setValue('/* style.scss */\n\n#navbar {\
+\t$navbar-width: 800px;\n\t$items: 5;\n\t$navbar-color: #ce4dd6;\n\n\
+\twidth: $navbar-width;\n\tborder-bottom: 2px solid $navbar-color;\n\n\
+\tli {\n\t\tfloat: left;\n\t\twidth: $navbar-width/$items - 10px;\n\n\
+\t\tbackground-color: lighten($navbar-color, 20%);\n\t\t&:hover {\n\
+\t\t\tbackground-color: lighten($navbar-color, 10%);\n\t\t}\n\t}\n}')
+		else if (mode == 'csharp')
+			this.$.editor.setValue('public void HelloWorld() {\n\t//Say Hello!\n\tConsole.WriteLine("Hello World");\n}')
+		else if (mode == 'clojure')
+			this.$.editor.setValue('(defn parting\n\
+\t"returns a String parting in a given language"\n\t([] (parting "World"))\n\
+\t([name] (parting name "en"))\n\t([name language]\n\
+\t\t; condp is similar to a case statement in other languages.\n\
+\t\t; It is described in more detail later.\n\
+\t\t; It is used here to take different actions based on whether the\n\
+\t\t; parameter "language" is set to "en", "es" or something else.\n\
+\t\t\t(condp = language\n\t\t\t"en" (str "Goodbye, " name)\n\t\t\t"es" (str "Adios, " name)\n\
+\t\t\t(throw (IllegalArgumentException.\n\t\t\t(str "unsupported language " language))))))\n\n\
+(println (parting)) ; -> Goodbye, World\n(println (parting "Mark")) ; -> Goodbye, Mark\n\
+(println (parting "Mark" "es")) ; -> Adios, Mark\n\
+(println (parting "Mark", "xy")) ; -> java.lang.IllegalArgumentException: unsupported language xy')
 		else
 			this.$.editor.setValue("")
 	}
