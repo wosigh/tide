@@ -2,8 +2,8 @@ function Prefs() {
 	
 	this.defaults = {
 		
-		theme: 'textmate',
-		mode: 'javascript',
+		theme: 'cobalt',
+		mode: 'python',
 		fontSize: '12px',
 		tabSize: '4',
 		

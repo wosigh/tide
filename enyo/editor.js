@@ -11,9 +11,44 @@ enyo.kind({
 	
 	rendered: function() {
 		this.editor = ace.edit(this.$.editor.getId())
-		var PythonMode = require("ace/mode/python").Mode
-		this.editor.getSession().setMode(new PythonMode())
+		var text = require("ace/mode/text").Mode
+		var c_cpp = require("ace/mode/c_cpp").Mode
+		var clojure = require("ace/mode/clojure").Mode
+		var coffee = require("ace/mode/coffee").Mode
+		var csharp = require("ace/mode/csharp").Mode
+		var css = require("ace/mode/css").Mode
+		var html = require("ace/mode/html").Mode
+		var java = require("ace/mode/java").Mode
+		var javascript = require("ace/mode/javascript").Mode
+		var json = require("ace/mode/json").Mode
+		var perl = require("ace/mode/perl").Mode
+		var php = require("ace/mode/php").Mode
+		var python = require("ace/mode/python").Mode
+		var ruby = require("ace/mode/ruby").Mode
+		var scss = require("ace/mode/scss").Mode
+		var svg = require("ace/mode/svg").Mode
+		var xml = require("ace/mode/xml").Mode
+		this.modes = {
+			'text': new text(),
+			'c_cpp': new c_cpp(),
+			'clojure': new clojure(),
+			'coffee': new coffee(),
+			'csharp': new csharp(),
+			'css': new css(),
+			'html': new html(),
+			'java': new java(),
+			'javascript': new javascript(),
+			'json': new json(),
+			'perl': new perl(),
+			'php': new php(),
+			'python': new python(),
+			'ruby': new ruby(),
+			'scss': new scss(),
+			'svg': new svg(),
+			'xml': new xml()
+		}
 		this.editor.setShowPrintMargin(true)
+		this.editor.getSession().setUseWrapMode(true)
 	},
 	
 	setTheme: function(theme) {
@@ -30,6 +65,10 @@ enyo.kind({
 	
 	setTabSize: function(size) {
 		this.editor.getSession().setTabSize(size)
+	},
+	
+	setMode: function(mode) {
+		this.editor.getSession().setMode(this.modes[mode])
 	},
 	
 	resizeRenderer: function() {
