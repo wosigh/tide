@@ -6,57 +6,36 @@ enyo.kind({
   	prefs: new Prefs(),
   	
   	components: [
+  		{
+			kind: "AppMenu",
+			components: [
+				{caption: "New", onclick: "new"},
+				{caption: "Save", onclick: "save"},
+				{caption: "Save As", onclick: "save"},
+				{caption: "Open", onclick: "open"},
+				{caption: "Highlight Mode", onclick: "highlightMode"},
+				{caption: "Preferences", onclick: "preferences"},
+			]
+		},
 		{
 			kind: 'Toolbar',
 			name: 'toolbar',
+			showing: true,
 			className: 'enyo-toolbar-light',
 			style: 'height: 48px;',
 			components: [
-				{kind: "ToolButtonGroup", components: [
-		      		{caption: 'Undo', onclick: 'undo'},
-		      		{caption: 'Redo', onclick: 'redo'}
-				]},
+				{icon: 'images/cog.png'},
+				{width: '16px'},
+				{icon: 'images/new.png'},
+				{icon: 'images/open.png'},
+				{icon: 'images/save.png'},
+				{width: '16px'},
+	      		{icon: 'images/undo.png', onclick: 'undo'},
+	      		{icon: 'images/redo.png', onclick: 'redo'},
 				{flex:1},
+				
 				{
-			  		kind: "Picker",
-			  		name: 'tabSizePicker',
-			  		value: '4',
-			  		items: ['1','2','3','4','5','6','7','8'],
-			  		onChange: "changeTabSize"
-				},
-				{
-			  		kind: "Picker",
-			  		name: 'fontSizePicker',
-			  		value: '12px',
-			  		items: ['12px','14px','16px','18px','20px','22px','24px'],
-			  		onChange: "changeFontSize"
-				},
-				{
-			  		kind: "Picker",
-			  		name: 'themePicker',
-			  		value: 'textmate',
-			  		items: [
-			  			{caption: 'Clouds Midnight', value: 'clouds_midnight'},
-						{caption: 'Clouds', value: 'clouds'},
-						{caption: 'Cobalt', value: 'cobalt'},
-						{caption: 'Crimson Editor', value: 'crimson_editor'},
-						{caption: 'Dawn', value: 'dawn'},
-						{caption: 'Eclipse', value: 'eclipse'},
-						{caption: 'idleFingers', value: 'idle_fingers'},
-						{caption: 'krTheme', value: 'kr_theme'},
-						{caption: 'Merbivore Soft', value: 'merbivore_soft'},
-						{caption: 'Merbivore', value: 'merbivore'},
-						{caption: 'Mono Industrial', value: 'mono_industrial'},
-						{caption: 'Monokai', value: 'monokai'},
-						{caption: 'Pastel on dark', value: 'pastel_on_dark'},
-						{caption: 'TextMate', value: 'textmate'},
-						{caption: 'Twilight', value: 'twilight'},
-						{caption: 'Vibrant Ink', value: 'vibrant_ink'}
-			  		],
-			  		onChange: "changeTheme"
-				},
-				{
-			  		kind: "Picker",
+			  		kind: "ListSelector",
 			  		name: 'modePicker',
 			  		value: 'python',
 			  		items: [
@@ -86,6 +65,19 @@ enyo.kind({
 			kind: 'Editah.Editor', name: 'editor', flex: 1
 		}
   	],
+  	
+  	initComponents: function() {
+  		this.inherited(arguments)
+  		this.createComponent({
+			kind: 'Preferences',
+			name: 'preferences',
+			prefs: this.prefs
+		})
+  	},
+  	
+  	preferences: function() {
+		this.$.preferences.openAtTopCenter()	
+	},
   	
   	undo: function() {
 		this.$.editor.undo()
@@ -119,7 +111,8 @@ enyo.kind({
   	resizeHandler: function() {
   		this.$.editor.refresh(
   			(window.innerWidth)+'px',
-  			(window.innerHeight-54)+'px',
+  			(window.innerHeight)+'px',
+  			//(window.innerHeight-54)+'px',
   			this.prefs.get('fontSize')
 		)
   		this.$.editor.resizeRenderer()
@@ -127,15 +120,15 @@ enyo.kind({
   	
   	rendered: function() {
 		this.inherited(arguments)
-		enyo.setFullScreen(true)
+		//enyo.setFullScreen(true)
 		enyo.keyboard.setResizesWindow(true)
 		this.$.editor.setTheme(this.prefs.get('theme'))
-		this.$.themePicker.setValue(this.prefs.get('theme'))
+		//this.$.themePicker.setValue(this.prefs.get('theme'))
 		this.$.editor.setFontSize(this.prefs.get('fontSize'))
 		this.$.editor.resizeRenderer()
-		this.$.fontSizePicker.setValue(this.prefs.get('fontSize'))
+		//this.$.fontSizePicker.setValue(this.prefs.get('fontSize'))
 		this.$.editor.setTabSize(parseInt(this.prefs.get('tabSize')))
-		this.$.tabSizePicker.setValue(this.prefs.get('tabSize'))
+		//this.$.tabSizePicker.setValue(this.prefs.get('tabSize'))
 		window.addEventListener('resize', enyo.bind(this, 'resizeHandler'), false)
 		this.$.modePicker.setValue(this.prefs.get('mode'))
 		this.$.editor.setMode(this.prefs.get('mode'))

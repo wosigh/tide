@@ -37,9 +37,8 @@ enyo.depends(
 	
 	"models/prefs.js",
 	
-	"css/vslider.css",
-	
-	"enyo/vslider.js",
+	"enyo/popup.js",
+	"enyo/prefs.js",
 	"enyo/editor.js",
 	"enyo/main.js"
 
