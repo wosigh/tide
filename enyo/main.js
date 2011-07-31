@@ -6,17 +6,6 @@ enyo.kind({
   	prefs: new Prefs(),
   	
   	components: [
-  		{
-			kind: "AppMenu",
-			components: [
-				{caption: "New", onclick: "new"},
-				{caption: "Save", onclick: "save"},
-				{caption: "Save As", onclick: "save"},
-				{caption: "Open", onclick: "open"},
-				{caption: "Highlight Mode", onclick: "highlightMode"},
-				{caption: "Preferences", onclick: "preferences"},
-			]
-		},
 		{
 			kind: 'Toolbar',
 			name: 'toolbar',
@@ -24,7 +13,7 @@ enyo.kind({
 			className: 'enyo-toolbar-light',
 			style: 'height: 48px;',
 			components: [
-				{icon: 'images/cog.png'},
+				{icon: 'images/cog.png', onclick: "preferences"},
 				{width: '16px'},
 				{icon: 'images/new.png'},
 				{icon: 'images/open.png'},
@@ -120,7 +109,7 @@ enyo.kind({
   	
   	rendered: function() {
 		this.inherited(arguments)
-		//enyo.setFullScreen(true)
+		enyo.setFullScreen(true)
 		enyo.keyboard.setResizesWindow(true)
 		this.$.editor.setTheme(this.prefs.get('theme'))
 		//this.$.themePicker.setValue(this.prefs.get('theme'))
