@@ -11,7 +11,6 @@ enyo.kind({
 			name: 'toolbar',
 			showing: true,
 			className: 'enyo-toolbar-light',
-			style: 'height: 48px;',
 			components: [
 				{icon: 'images/cog.png', onclick: "preferences"},
 				{width: '16px'},
@@ -21,6 +20,8 @@ enyo.kind({
 				{width: '16px'},
 	      		{icon: 'images/undo.png', onclick: 'undo'},
 	      		{icon: 'images/redo.png', onclick: 'redo'},
+	      		{width: '16px'},
+	      		{icon: 'images/search.png', onclick: 'toggleSearch'},
 				{flex:1},
 				
 				{
@@ -52,6 +53,19 @@ enyo.kind({
 		},
 		{
 			kind: 'Editah.Editor', name: 'editor', flex: 1
+		},
+		{
+			kind: 'Toolbar',
+			name: 'searchbar',
+			showing: false,
+			className: 'enyo-toolbar-light',
+			components: [
+				{kind: 'Input', alwaysLooksFocused: true, hint: $L('Find'), flex: 1},
+				{caption: 'Find'},
+				{kind: 'Input', alwaysLooksFocused: true, hint: $L('Replace'), flex: 1},
+				{caption: 'Replace'},
+				{caption: 'Replace All'},
+			]
 		}
   	],
   	
@@ -63,6 +77,10 @@ enyo.kind({
 			prefs: this.prefs,
 			onClose: 'refresh'
 		})
+  	},
+  	
+  	toggleSearch: function() {
+  		this.$.searchbar.setShowing(!this.$.searchbar.showing)
   	},
   	
   	preferences: function() {
@@ -99,9 +117,14 @@ enyo.kind({
   	},
   	
   	resizeHandler: function() {
+  		var voffset = 0
+  		if (this.$.toolbar.showing)
+  			voffset = voffset - 54
+		if (this.$.searchbar.showing)
+  			voffset = voffset - 54
   		this.$.editor.refresh(
   			(window.innerWidth)+'px',
-  			(window.innerHeight-54)+'px',
+  			(window.innerHeight-voffset)+'px',
   			this.prefs.get('fontSize')
 		)
   		this.$.editor.resizeRenderer()

@@ -6,6 +6,7 @@
 	"type": "web",
 	"noDeprecatedStyles": true,
 	"main": "index.html",
-	"icon": "images/icon.png",
+	"icon": "images/Icon-64.png",
+	"splashicon": "images/Icon-128.png",
 	"uiRevision": 2,
 }
