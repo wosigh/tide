@@ -20,8 +20,8 @@ enyo.kind({
 				{width: '16px'},
 	      		{icon: 'images/undo.png', onclick: 'undo'},
 	      		{icon: 'images/redo.png', onclick: 'redo'},
-	      		{width: '16px'},
-	      		{icon: 'images/search.png', onclick: 'toggleSearch'},
+	      		//{width: '16px'},
+	      		//{icon: 'images/search.png', onclick: 'toggleSearch'},
 				{flex:1},
 				
 				{
