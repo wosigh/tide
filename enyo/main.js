@@ -100,8 +100,7 @@ enyo.kind({
   	resizeHandler: function() {
   		this.$.editor.refresh(
   			(window.innerWidth)+'px',
-  			(window.innerHeight)+'px',
-  			//(window.innerHeight-54)+'px',
+  			(window.innerHeight-54)+'px',
   			this.prefs.get('fontSize')
 		)
   		this.$.editor.resizeRenderer()
