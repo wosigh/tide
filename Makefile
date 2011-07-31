@@ -1,3 +1,5 @@
+APPID = us.ryanhope.tide
+
 ace: clean
 	cd ace; make
 	
@@ -10,3 +12,8 @@ prepare:
 	
 package: ace
 	palm-package -X excludes.txt .
+
+install: package
+	palm-install ${APPID}_*.ipk
+	palm-launch ${APPID}
+
