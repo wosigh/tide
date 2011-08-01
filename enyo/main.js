@@ -84,19 +84,17 @@ enyo.kind({
 			kind: 'FileDialog',
 			name: 'filedialog',
 			prefs: this.prefs,
-			onOpen: 'handleOpen',
-			onClose: 'handleClose'
+			onFileOpen: 'handleOpen',
+			onFileSave: 'handleSave'
 		})
   	},
   	
   	openDialog: function() {
-  		this.$.filedialog.openAtTopCenter('open')
-  		this.$.filedialog.render()
+  		this.$.filedialog.display('open')
   	},
   	
   	saveDialog: function() {
-  		this.$.filedialog.openAtTopCenter('save')
-  		this.$.filedialog.render()
+  		this.$.filedialog.display('save')
   	},
   	
   	toggleSearch: function() {
@@ -160,13 +158,10 @@ enyo.kind({
   	},
   	
   	handleSave: function(inSender, file) {
-  		this.warn(file)
   	},
   	
   	handleOpen: function(inSender, file) {
-  		this.warn(file)
-  		if (file)
-  			this.$.readfile.call({ 'path': file })
+		this.$.readfile.call({ 'path': file })
 		this.resizeHandler()
   	},
   	

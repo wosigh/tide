@@ -15,8 +15,8 @@ enyo.kind({
 	dataSize: 0,
 	
 	events: {
-		onSave: '',
-		onOpen: ''
+		onFileSave: '',
+		onFileOpen: ''
 	},
 	
 	components: [
@@ -50,7 +50,8 @@ enyo.kind({
 					components: [
 						{kind: 'Item', tapHighlight: true, name: 'diritem', onclick: 'diritemclick'}
 	    			]
-				}
+				},
+				{flex: 1}
 			]
 		},
   		{
@@ -97,16 +98,30 @@ enyo.kind({
   		this.data.push(inResponse)
   		if (this.data.length == this.dataSize) {
   			this.$.dirlist.data = this.data
+  			this.$.dirlist.setShowing(true)
 			this.$.dirlist.refresh()
   		}
   	},
 	
 	setupRow: function(inSender, info, inIndex) {
-		this.$.diritem.setContent(this.data[inIndex].path)
+		this.$.diritem.setContent(info.path)
 	},
 	
-	rendered: function() {
-		this.inherited(arguments)
+	handleAction: function() {
+		if (this.type == 'open')
+			this.doFileOpen(this.$.filename.getValue())
+		else if (this.type == 'save')
+			this.doFileSave(this.$.filename.getValue())
+		this.close()
+	},
+	
+	display: function(type) {
+		this.data = []
+		this.type = type
+		this.openAtTopCenter()
+		this.$.dirlist.setShowing(false)
+		this.$.filename.setValue('')
+		this.$.action.setDisabled(true)
 		if (this.type == 'open') {
 			this.$.title.setContent('Open File')
 			this.$.action.setCaption('Open')
@@ -115,16 +130,6 @@ enyo.kind({
 			this.$.action.setCaption('Save')
 		}
 		this.$.readdir.call({ 'path': '/media/internal' })
-		for (k in this.$.dirlist.client)
-			this.error([k,this.$.dirlist.client[k]])
-	},
-	
-	handleAction: function() {
-		if (this.type == 'open')
-			this.doOpen(this.$.filename.getValue())
-		else if (this.type == 'save')
-			this.doSave(this.$.filename.getValue())
-		this.close()
 	}
 
 })
