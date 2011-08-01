@@ -39,10 +39,13 @@ enyo.depends(
 	
 	"$enyo/palm/list2/",
 	
+	"css/main.css",
+	
 	"enyo/popup.js",
 	"enyo/prefs.js",
 	"enyo/list.js",
 	"enyo/filedialog.js",
+	"enyo/dirlist-item.js",
 	"enyo/editor.js",
 	"enyo/main.js"
 

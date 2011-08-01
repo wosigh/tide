@@ -1,0 +1,10 @@
+.dirlistIcon {
+	width: 24px;
+	height: 24px;
+	text-align: left;
+	padding-right: 8px;
+	background-image: url(../images/dirlist.png);
+	background-repeat: no-repeat;
+}
+.dirlistIcon.folder {background-position: 0px 0px;}
+.dirlistIcon.file {background-position: 0px -24px;}

@@ -49,7 +49,7 @@ enyo.kind({
 					style: 'border-style:inset; margin: 8px 0px',
 					onSetupRow: 'setupRow',
 					components: [
-						{kind: 'Item', tapHighlight: true, name: 'diritem', onclick: 'diritemclick'}
+						{kind: 'DirlistItem', name: 'diritem', onclick: 'diritemclick'}
 	    			]
 				},
 				{flex: 1}
@@ -105,7 +105,11 @@ enyo.kind({
   	},
 	
 	setupRow: function(inSender, info, inIndex) {
-		this.$.diritem.setContent(info.path)
+		if (info.isFile)
+			this.$.diritem.$.icon.addClass('file')
+		else if (info.isDirectory)
+			this.$.diritem.$.icon.addClass('folder')
+		this.$.diritem.$.file.setContent(info.path)
 	},
 	
 	handleAction: function() {
