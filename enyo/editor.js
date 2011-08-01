@@ -98,7 +98,8 @@ enyo.kind({
 		this.$.editor.applyStyle('width',width)
 		this.$.editor.applyStyle('height',height)
 		this.setFontSize(fontSize)
-		this.editor.scrollToRow(this.editor.getCursorPosition().row)
+		if (enyo.keyboard.isShowing())
+			this.editor.centerSelection()
 	},
 	
 	undo: function() {

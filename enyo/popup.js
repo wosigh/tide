@@ -3,8 +3,9 @@ enyo.kind({
 	kind: "Popup",
 	fixPositionY: true, // set this to false to get normal repositioning behavior
 	current_y: null,
-	published: {url:'',key:'',secret:''},
-	openAtTopCenter:function() {
+	type: null,
+	openAtTopCenter:function(type) {
+		this.type = type;
 		this.setBoundsInfo("applyHalfCenterBounds", arguments);
 		this.open();
 	},

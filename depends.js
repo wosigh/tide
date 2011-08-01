@@ -34,11 +34,15 @@ enyo.depends(
 	"ace/build/src/theme-pastel_on_dark.js",
 	"ace/build/src/theme-twilight.js",
 	"ace/build/src/theme-vibrant_ink.js",
-	
+
 	"models/prefs.js",
+	
+	"$enyo/palm/list2/",
 	
 	"enyo/popup.js",
 	"enyo/prefs.js",
+	"enyo/list.js",
+	"enyo/filedialog.js",
 	"enyo/editor.js",
 	"enyo/main.js"
 

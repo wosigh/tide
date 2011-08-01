@@ -6,6 +6,9 @@ enyo.kind({
   	prefs: new Prefs(),
   	
   	components: [
+  		{ name: 'readfile', kind: 'PalmService',
+	      service: 'palm://us.ryanhope.tide.fileio/', method: 'readfile',
+	      onResponse: 'readfile' },
 		{
 			kind: 'Toolbar',
 			name: 'toolbar',
@@ -15,8 +18,8 @@ enyo.kind({
 				{icon: 'images/cog.png', onclick: "preferences"},
 				{width: '16px'},
 				{icon: 'images/new.png'},
-				{icon: 'images/open.png'},
-				{icon: 'images/save.png'},
+				{icon: 'images/open.png', onclick: "openDialog"},
+				{icon: 'images/save.png', onclick: "saveDialog"},
 				{width: '16px'},
 	      		{icon: 'images/undo.png', onclick: 'undo'},
 	      		{icon: 'images/redo.png', onclick: 'redo'},
@@ -77,6 +80,23 @@ enyo.kind({
 			prefs: this.prefs,
 			onClose: 'refresh'
 		})
+		this.createComponent({
+			kind: 'FileDialog',
+			name: 'filedialog',
+			prefs: this.prefs,
+			onOpen: 'handleOpen',
+			onClose: 'handleClose'
+		})
+  	},
+  	
+  	openDialog: function() {
+  		this.$.filedialog.openAtTopCenter('open')
+  		this.$.filedialog.render()
+  	},
+  	
+  	saveDialog: function() {
+  		this.$.filedialog.openAtTopCenter('save')
+  		this.$.filedialog.render()
   	},
   	
   	toggleSearch: function() {
@@ -117,14 +137,9 @@ enyo.kind({
   	},
   	
   	resizeHandler: function() {
-  		var voffset = 0
-  		if (this.$.toolbar.showing)
-  			voffset = voffset - 54
-		if (this.$.searchbar.showing)
-  			voffset = voffset - 54
   		this.$.editor.refresh(
-  			(window.innerWidth)+'px',
-  			(window.innerHeight-voffset)+'px',
+  			window.innerWidth+'px',
+  			(window.innerHeight-54)+'px',
   			this.prefs.get('fontSize')
 		)
   		this.$.editor.resizeRenderer()
@@ -142,6 +157,21 @@ enyo.kind({
   		
   		this.$.editor.setMode(this.prefs.get('mode'))
 		this.$.modePicker.setValue(this.prefs.get('mode'))
+  	},
+  	
+  	handleSave: function(inSender, file) {
+  		this.warn(file)
+  	},
+  	
+  	handleOpen: function(inSender, file) {
+  		this.warn(file)
+  		if (file)
+  			this.$.readfile.call({ 'path': file })
+		this.resizeHandler()
+  	},
+  	
+  	readfile: function(inSender, inResponse, inRequest) {
+  		this.$.editor.setValue(inResponse.content)
   	},
   	
   	rendered: function() {
