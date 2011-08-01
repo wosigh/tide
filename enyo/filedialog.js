@@ -29,7 +29,7 @@ enyo.kind({
 		{
 			layoutKind: "HFlexLayout",
 			pack: "center",
-			style: 'padding-bottom: 20px;',
+			style: 'padding-bottom: 16px;',
 			components: [
           		{name: 'title', content: "Open or Save"}
 			]
@@ -38,14 +38,15 @@ enyo.kind({
 			layoutKind: "VFlexLayout",
 			pack: "center",
 			width: '600px',
-			height: '300px',
+			align: 'center',
 			components: [
-				{kind: "Input", onchange: "inputChange", name: 'filename', hint: '', alwaysLooksFocused: true},
+				{kind: "Input", onchange: "inputChange", width: '100%', name: 'filename', hint: '', alwaysLooksFocused: true},
 				{
 					kind: 'List2',
 					name: 'dirlist',
-					height: '250px',
-					width: '100%',
+					height: '220px',
+					width: '98%',
+					style: 'border-style:inset; margin: 8px 0px',
 					onSetupRow: 'setupRow',
 					components: [
 						{kind: 'Item', tapHighlight: true, name: 'diritem', onclick: 'diritemclick'}
@@ -119,7 +120,6 @@ enyo.kind({
 		this.data = []
 		this.type = type
 		this.openAtTopCenter()
-		this.$.dirlist.setShowing(false)
 		this.$.filename.setValue('')
 		this.$.action.setDisabled(true)
 		if (this.type == 'open') {
