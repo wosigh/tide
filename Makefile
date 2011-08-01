@@ -8,9 +8,11 @@ clean:
 	rm -rf *.ipk
 	
 prepare:
-	git remote set-url --push origin git@git.webos-internals.org:js/ace
 	git submodule update --init --recursive
-	cd ace; git remote set-url --push origin git@git.webos-internals.org:js/pilot; npm install uglify-js
+	cd ace;\
+	git remote set-url --push origin git@git.webos-internals.org:js/ace;\
+	npm install uglify-js; cd support/pilot;\
+	git remote set-url --push origin git@git.webos-internals.org:js/pilot
 	
 package: ace
 	palm-package -X excludes.txt . package node-service
