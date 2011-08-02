@@ -71,7 +71,7 @@ enyo.kind({
 	},
 	
 	getValue: function() {
-		this.editor.getSession().getValue()
+		return this.editor.getSession().getValue()
 	},
 	
 	setValue: function(value) {

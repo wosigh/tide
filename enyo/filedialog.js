@@ -107,8 +107,7 @@ enyo.kind({
 	],
 	
 	inputChange: function(inSender, inEvent, inMessage) {
-		this.warn([inSender, inEvent, inMessage])
-		if (this.$.filename.getValue().lenght>0)
+		if (inMessage)
 			this.$.action.setDisabled(false)
 		else
 			this.$.action.setDisabled(true)

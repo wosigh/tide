@@ -9,6 +9,9 @@ enyo.kind({
   		{ name: 'readfile', kind: 'PalmService',
 	      service: 'palm://us.ryanhope.tide.fileio/', method: 'readfile',
 	      onResponse: 'readfile' },
+      	{ name: 'writefile', kind: 'PalmService',
+	      service: 'palm://us.ryanhope.tide.fileio/', method: 'writefile',
+	      onResponse: 'writefile' },
 		{
 			kind: 'Toolbar',
 			name: 'toolbar',
@@ -192,12 +195,17 @@ enyo.kind({
   	},
   	
   	handleSave: function(inSender, file) {
-  		this.$.readfile.call({ 'path': file, 'content': this.$.editor.getValue()})
+  		this.error(this.$.editor.getValue())
+  		this.$.writefile.call({ 'path': file, 'content': this.$.editor.getValue()})
   	},
   	
   	handleOpen: function(inSender, file) {
 		this.$.readfile.call({ 'path': file })
 		this.resizeListener()
+  	},
+  	
+  	writefile: function(inSender, inResponse, inRequest) {
+  		this.warn(inResponse)
   	},
   	
   	readfile: function(inSender, inResponse, inRequest) {
