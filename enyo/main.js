@@ -72,6 +72,40 @@ enyo.kind({
 		}
   	],
   	
+  	setModeByExtension: function(filename) {
+  		var mode = "text";
+        if (/^.*\.js$/i.test(filename)) {
+            mode = "javascript";
+        } else if (/^.*\.xml$/i.test(filename)) {
+            mode = "xml";
+        } else if (/^.*\.html$/i.test(filename)) {
+            mode = "html";
+        } else if (/^.*\.css$/i.test(filename)) {
+            mode = "css";
+        } else if (/^.*\.scss$/i.test(filename)) {
+            mode = "scss";
+        } else if (/^.*\.py$/i.test(filename)) {
+            mode = "python";
+        } else if (/^.*\.php$/i.test(filename)) {
+            mode = "php";
+        } else if (/^.*\.cs$/i.test(filename)) {
+            mode = "csharp";
+        } else if (/^.*\.java$/i.test(filename)) {
+            mode = "java";
+        } else if (/^.*\.rb$/i.test(filename)) {
+            mode = "ruby";
+        } else if (/^.*\.(c|cpp|h|hpp|cxx)$/i.test(filename)) {
+            mode = "c_cpp";
+        } else if (/^.*\.coffee$/i.test(filename)) {
+            mode = "coffee";
+        } else if (/^.*\.json$/i.test(filename)) {
+            mode = "json";
+        } else if (/^.*\.(pl|pm)$/i.test(filename)) {
+            mode = "perl";
+        }
+        this.changeMode(null,mode)
+  	},
+  	
   	initComponents: function() {
   		this.inherited(arguments)
   		this.createComponent({
@@ -131,6 +165,7 @@ enyo.kind({
   	changeMode: function(inSender, inValue) {
   		this.$.editor.setMode(inValue)
   		this.prefs.set('mode',inValue)
+  		this.$.modePicker.setValue(this.prefs.get('mode'))
   	},
   	
   	resizeHandler: function() {
@@ -160,13 +195,12 @@ enyo.kind({
   	},
   	
   	handleOpen: function(inSender, file) {
-  		this.warn(file)
 		this.$.readfile.call({ 'path': file })
 		this.resizeHandler()
   	},
   	
   	readfile: function(inSender, inResponse, inRequest) {
-  		this.warn(inResponse)
+  		this.setModeByExtension(inResponse.path)
   		this.$.editor.setValue(inResponse.content)
   	},
   	
@@ -177,7 +211,6 @@ enyo.kind({
 		this.refresh()
 		this.$.editor.resizeRenderer()
 		window.addEventListener('resize', enyo.bind(this, 'resizeHandler'), false)
-		this.showDemoDoc(this.prefs.get('mode'))
   	}
   	
 })
