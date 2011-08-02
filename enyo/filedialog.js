@@ -138,16 +138,26 @@ enyo.kind({
 		}
   	},
   	
+  	sortPaths: function(a ,b) {
+  		if (a.path > b.path)
+  			return 1
+		else if (a.path < b.path)
+			return -1
+		else
+			return 0
+  	},
+  	
   	stat: function(inSender, inResponse, inRequest) {
   		if (inResponse.returnValue) {
 	  		this.data.push(inResponse)
 	  		if (this.data.length == this.dataSize) {
+	  			this.data.sort(enyo.bind(this,'sortPaths'))
 	  			for (i in this.data) {
 	  				if (this.data[i].isFile)
 	  					this.$.filelist.data.push(this.data[i])
 					else
 						this.$.dirlist.data.push(this.data[i])
-	  			} 
+	  			}
 				this.$.filelist.refresh()
 				this.$.dirlist.refresh()
 	  		}
