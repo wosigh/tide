@@ -1,4 +1,8 @@
 enyo.kind({
+	
+	/*
+	 * TODO: Fix loading files with spaces in the path
+	 */
 			
 	kind: 'Popup2',
 	name: 'FileDialog',
