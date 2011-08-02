@@ -1,0 +1,14 @@
+{
+  "role": {
+     "exeName":"js",
+     "type": "privileged",
+     "allowedNames": ["us.ryanhope.tide.fileio"]
+  },
+  "permissions": [
+    {
+      "service":"us.ryanhope.tide.fileio",
+      "inbound":["*"],
+      "outbound":["*"]
+    }
+  ]
+}

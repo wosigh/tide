@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=us.ryanhope.tide.fileio
+Exec=/var/usr/sbin/us.ryanhope.tide.fileio
