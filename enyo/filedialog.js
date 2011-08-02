@@ -50,7 +50,7 @@ enyo.kind({
 					components: [
 						{kind: 'IconButton', icon: 'images/folder-new.png', pack: 'center', align: 'center'},
 						{
-							kind: "Input", onchange: "inputChange", 
+							kind: "Input", onchange: "inputChange", changeOnInput: true,
 							width: '100%', autoCapitalize: 'lowercase', 
 							name: 'filename', hint: '', autoWordComplete: false,
 							alwaysLooksFocused: true, spellcheck: false
@@ -107,7 +107,8 @@ enyo.kind({
 	],
 	
 	inputChange: function(inSender, inEvent, inMessage) {
-		if (this.$.filename.getValue().trim().lenght>0)
+		this.warn([inSender, inEvent, inMessage])
+		if (this.$.filename.getValue().lenght>0)
 			this.$.action.setDisabled(false)
 		else
 			this.$.action.setDisabled(true)
