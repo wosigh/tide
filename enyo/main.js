@@ -161,11 +161,13 @@ enyo.kind({
   	},
   	
   	handleOpen: function(inSender, file) {
+  		this.warn(file)
 		this.$.readfile.call({ 'path': file })
 		this.resizeHandler()
   	},
   	
   	readfile: function(inSender, inResponse, inRequest) {
+  		this.warn(inResponse)
   		this.$.editor.setValue(inResponse.content)
   	},
   	

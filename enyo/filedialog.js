@@ -6,7 +6,7 @@ enyo.kind({
 	modal: true,
 	autoClose: false,
 	dismissWithClick: false,
-	width: '768px',
+	width: '700px',
 		
 	published: {
 		prefs: null
@@ -63,17 +63,6 @@ enyo.kind({
 							components: [
 								{kind: 'DirlistItem', name: 'diritem', onclick: 'diritemclick'}
 			    			]
-						},
-						{
-							kind: 'List2',
-							name: 'filelist',
-							height: '220px',
-							flex: 1,
-							style: 'border-style:inset;',
-							onSetupRow: 'setupRow',
-							components: [
-								{kind: 'DirlistItem', name: 'fileitem', onclick: 'diritemclick'}
-			    			]
 						}
 					]
 				}
@@ -82,14 +71,19 @@ enyo.kind({
   		{
   			layoutKind: "HFlexLayout",
   			pack: "center",
+  			align: "center",
   			components: [
+  				{kind: "HFlexBox", pack: 'center', align: "center", components: [
+  					{kind: "CheckBox", name: 'showHidden', style: 'margin-left:8px;', checked: true},
+          			{content: "Show Hidden", style: 'margin-left:8px; font-size: 90%;'}
+      			]},
+      			{flex: 2},
       			{
       				kind: "Button",
       				caption: "Cancel",
       				flex: 1,
       				onclick: 'close'
   				},
-  				{kind: 'Spacer', flex: 2},
   				{
       				kind: "Button",
       				caption: "Save/Open",
@@ -103,8 +97,8 @@ enyo.kind({
 	],
 	
 	diritemclick: function(inSender, inEvent, rowIndex) {
-		if (inSender.name == 'fileitem') {
-			this.$.filename.setValue(this.$.filelist.data[rowIndex].path)
+		if (this.$.dirlist.data[rowIndex].isFile) {
+			this.$.filename.setValue(this.$.dirlist.data[rowIndex].path)
 			this.$.action.setDisabled(false)
 		} else {
 			this.$.filename.setValue('')
@@ -117,7 +111,6 @@ enyo.kind({
 				else
 					path = path.substring(0,path.lastIndexOf('/'))
 			}
-			this.warn(path)
 			this.$.path.setContent(path)
 			this.clear()
 			this.$.readdir.call({ 'path': path })
@@ -138,27 +131,31 @@ enyo.kind({
 		}
   	},
   	
-  	sortPaths: function(a ,b) {
-  		if (a.path > b.path)
-  			return 1
+  	sortByPath: function(a ,b) {
+		if (a.path > b.path)
+			return 1
 		else if (a.path < b.path)
 			return -1
 		else
 			return 0
-  	},
+	},
+
+	sortByType: function(a, b) {
+		if (a.isDirectory && b.isFile)
+			return -1
+		else if (a.isFile && b.isDirectory)
+			return 1
+		else
+			return this.sortByPath(a, b)
+	},
   	
   	stat: function(inSender, inResponse, inRequest) {
   		if (inResponse.returnValue) {
 	  		this.data.push(inResponse)
 	  		if (this.data.length == this.dataSize) {
-	  			this.data.sort(enyo.bind(this,'sortPaths'))
-	  			for (i in this.data) {
-	  				if (this.data[i].isFile)
-	  					this.$.filelist.data.push(this.data[i])
-					else
-						this.$.dirlist.data.push(this.data[i])
-	  			}
-				this.$.filelist.refresh()
+	  			this.data.sort(enyo.bind(this,'sortByType'))
+	  			for (i in this.data)
+					this.$.dirlist.data.push(this.data[i])
 				this.$.dirlist.refresh()
 	  		}
   		} else {
@@ -170,13 +167,11 @@ enyo.kind({
 		var path = info.path
 		path = path.split('/')
 		path = path[path.length-1]
-		if (info.isFile) {
-			this.$.fileitem.$.icon.addClass('file')
-			this.$.fileitem.$.file.setContent(path)
-		} else {
+		if (info.isFile)
+			this.$.diritem.$.icon.addClass('file')
+		else
 			this.$.diritem.$.icon.addClass('folder')
-			this.$.diritem.$.file.setContent(path)
-		}
+		this.$.diritem.$.file.setContent(path)
 	},
 	
 	handleAction: function() {
@@ -189,10 +184,8 @@ enyo.kind({
 	
 	clear: function() {
 		this.$.dirlist.data = []
-		this.$.filelist.data = []
 		if (this.$.path.getContent() != '/')
 			this.$.dirlist.data.push({path:'..',isDirectory:true,isFile:false})
-		this.$.filelist.refresh()
 		this.$.dirlist.refresh()
 	},
 	

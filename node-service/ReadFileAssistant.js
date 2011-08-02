@@ -6,5 +6,5 @@ ReadFileAssistant.prototype.run = function(future) {
 	
 	var path = this.controller.args.path
 	
-	fs.readFile(path, 'utf8', function(err,data) { future.result = { path: path, content: data }; });
+	fs.readFile(path, 'binary', function(err,data) { future.result = { path: path, content: data }; });
 }
