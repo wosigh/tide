@@ -19,5 +19,6 @@
 			- Save dialog set to last open file
 			- Implement mkdir support
 			- Highlight / Cut / Copy / Paste support
+			- Better keyboard handling (might require manual mode)
 			- Handle multiple files
 			- Printing support
