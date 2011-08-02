@@ -220,6 +220,7 @@ enyo.kind({
 		this.refresh()
 		this.$.editor.resizeRenderer()
 		window.addEventListener('resize', enyo.bind(this, 'resizeListener'), false)
+		this.$.readfile.call({ 'path': 'TIDE.txt' })
   	}
   	
 })
