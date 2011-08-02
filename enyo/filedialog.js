@@ -6,6 +6,7 @@ enyo.kind({
 	modal: true,
 	autoClose: false,
 	dismissWithClick: false,
+	width: '768px',
 		
 	published: {
 		prefs: null
@@ -37,36 +38,58 @@ enyo.kind({
 		{
 			layoutKind: "VFlexLayout",
 			pack: "center",
-			width: '600px',
-			align: 'center',
+			width: '100%',
 			components: [
-				{kind: "Input", onchange: "inputChange", width: '100%', name: 'filename', hint: '', alwaysLooksFocused: true},
 				{
-					kind: 'List2',
-					name: 'dirlist',
-					height: '220px',
-					width: '98%',
-					style: 'border-style:inset; margin: 8px 0px',
-					onSetupRow: 'setupRow',
+					layoutKind: "HFlexLayout",
+					width: '100%',
 					components: [
-						{kind: 'DirlistItem', name: 'diritem', onclick: 'diritemclick'}
-	    			]
+						{kind: 'IconButton', icon: 'images/folder-new.png', pack: 'center', align: 'center'},
+						{kind: "Input", onchange: "inputChange", width: '100%', name: 'filename', hint: '', alwaysLooksFocused: true}
+					]
 				},
-				{flex: 1}
+				{content: '/media/internal', name: 'path', style: 'font-size: 70%; margin: 8px 0px;'},
+				{
+					layoutKind: "HFlexLayout",
+					width: '100%',
+					components: [
+						{
+							kind: 'List2',
+							name: 'dirlist',
+							height: '220px',
+							flex: 1,
+							style: 'border-style:inset;',
+							onSetupRow: 'setupRow',
+							components: [
+								{kind: 'DirlistItem', name: 'diritem', onclick: 'diritemclick'}
+			    			]
+						},
+						{
+							kind: 'List2',
+							name: 'filelist',
+							height: '220px',
+							flex: 1,
+							style: 'border-style:inset;',
+							onSetupRow: 'setupRow',
+							components: [
+								{kind: 'DirlistItem', name: 'fileitem', onclick: 'diritemclick'}
+			    			]
+						}
+					]
+				}
 			]
 		},
   		{
   			layoutKind: "HFlexLayout",
   			pack: "center",
-  			style: 'padding-above: 20px;',
   			components: [
-  				{kind: 'Spacer'},
       			{
       				kind: "Button",
       				caption: "Cancel",
       				flex: 1,
       				onclick: 'close'
   				},
+  				{kind: 'Spacer', flex: 2},
   				{
       				kind: "Button",
       				caption: "Save/Open",
@@ -75,41 +98,75 @@ enyo.kind({
       				disabled: true,
       				onclick: "handleAction"
   				},
-  				{kind: 'Spacer'}
   			]
 		}
 	],
 	
 	diritemclick: function(inSender, inEvent, rowIndex) {
-		this.$.filename.setValue(this.$.dirlist.data[rowIndex].path)
-		if (this.$.dirlist.data[rowIndex].isFile)
+		if (inSender.name == 'fileitem') {
+			this.$.filename.setValue(this.$.filelist.data[rowIndex].path)
 			this.$.action.setDisabled(false)
-		else
+		} else {
+			this.$.filename.setValue('')
 			this.$.action.setDisabled(true)
+			var path = this.$.dirlist.data[rowIndex].path
+			if (path == '..') {
+				path = this.$.path.getContent()
+				if (path.lastIndexOf('/') == 0)
+					path = '/'
+				else
+					path = path.substring(0,path.lastIndexOf('/'))
+			}
+			this.warn(path)
+			this.$.path.setContent(path)
+			this.clear()
+			this.$.readdir.call({ 'path': path })
+		}
 	},
 	
   	readdir: function(inSender, inResponse, inRequest) {
-  		this.data = []
-  		this.dataSize = inResponse.files.length
-  		for (i in inResponse.files)
-  			this.$.stat.call({ 'path': '/media/internal/' + inResponse.files[i] })
+  		if (inResponse.returnValue) {
+	  		this.data = []
+	  		this.dataSize = inResponse.files.length
+	  		var base = '/'
+	  		if (this.$.path.getContent() != '/')
+	  			base = this.$.path.getContent() + '/'
+	  		for (i in inResponse.files)
+	  			this.$.stat.call({ 'path': base + inResponse.files[i] })
+		} else {
+			this.error(inResponse)
+		}
   	},
   	
   	stat: function(inSender, inResponse, inRequest) {
-  		this.data.push(inResponse)
-  		if (this.data.length == this.dataSize) {
-  			this.$.dirlist.data = this.data
-  			this.$.dirlist.setShowing(true)
-			this.$.dirlist.refresh()
+  		if (inResponse.returnValue) {
+	  		this.data.push(inResponse)
+	  		if (this.data.length == this.dataSize) {
+	  			for (i in this.data) {
+	  				if (this.data[i].isFile)
+	  					this.$.filelist.data.push(this.data[i])
+					else
+						this.$.dirlist.data.push(this.data[i])
+	  			} 
+				this.$.filelist.refresh()
+				this.$.dirlist.refresh()
+	  		}
+  		} else {
+  			this.error(inResponse)
   		}
   	},
 	
 	setupRow: function(inSender, info, inIndex) {
-		if (info.isFile)
-			this.$.diritem.$.icon.addClass('file')
-		else if (info.isDirectory)
+		var path = info.path
+		path = path.split('/')
+		path = path[path.length-1]
+		if (info.isFile) {
+			this.$.fileitem.$.icon.addClass('file')
+			this.$.fileitem.$.file.setContent(path)
+		} else {
 			this.$.diritem.$.icon.addClass('folder')
-		this.$.diritem.$.file.setContent(info.path)
+			this.$.diritem.$.file.setContent(path)
+		}
 	},
 	
 	handleAction: function() {
@@ -120,10 +177,20 @@ enyo.kind({
 		this.close()
 	},
 	
+	clear: function() {
+		this.$.dirlist.data = []
+		this.$.filelist.data = []
+		if (this.$.path.getContent() != '/')
+			this.$.dirlist.data.push({path:'..',isDirectory:true,isFile:false})
+		this.$.filelist.refresh()
+		this.$.dirlist.refresh()
+	},
+	
 	display: function(type) {
+		this.openAtTopCenter()
+		this.clear()
 		this.data = []
 		this.type = type
-		this.openAtTopCenter()
 		this.$.filename.setValue('')
 		this.$.action.setDisabled(true)
 		if (this.type == 'open') {
@@ -133,7 +200,7 @@ enyo.kind({
 			this.$.title.setContent('Save File')
 			this.$.action.setCaption('Save')
 		}
-		this.$.readdir.call({ 'path': '/media/internal' })
+		this.$.readdir.call({ 'path': this.$.path.getContent() })
 	}
 
 })

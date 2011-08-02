@@ -6,7 +6,7 @@ enyo.kind({
 	
 	components: [
 		{name: 'icon', className: 'dirlistIcon'},
-		{name: 'file'}
+		{name: 'file', style: 'white-space: nowrap; overflow: hidden;'}
 	]
 	
 })
