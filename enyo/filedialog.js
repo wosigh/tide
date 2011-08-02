@@ -49,7 +49,12 @@ enyo.kind({
 					width: '100%',
 					components: [
 						{kind: 'IconButton', icon: 'images/folder-new.png', pack: 'center', align: 'center'},
-						{kind: "Input", onchange: "inputChange", width: '100%', name: 'filename', hint: '', alwaysLooksFocused: true}
+						{
+							kind: "Input", onchange: "inputChange", 
+							width: '100%', autoCapitalize: 'lowercase', 
+							name: 'filename', hint: '', autoWordComplete: false,
+							alwaysLooksFocused: true, spellcheck: false
+						}
 					]
 				},
 				{content: '/media/internal', name: 'path', style: 'font-size: 70%; margin: 8px 0px;'},
@@ -100,6 +105,13 @@ enyo.kind({
 			]
 		}
 	],
+	
+	inputChange: function(inSender, inEvent, inMessage) {
+		if (this.$.filename.getValue().trim().lenght>0)
+			this.$.action.setDisabled(false)
+		else
+			this.$.action.setDisabled(true)
+	},
 	
 	diritemclick: function(inSender, inEvent, rowIndex) {
 		if (this.$.dirlist.data[rowIndex].isFile) {

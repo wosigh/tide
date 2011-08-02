@@ -192,6 +192,7 @@ enyo.kind({
   	},
   	
   	handleSave: function(inSender, file) {
+  		this.$.readfile.call({ 'path': file, 'content': this.$.editor.getValue()})
   	},
   	
   	handleOpen: function(inSender, file) {

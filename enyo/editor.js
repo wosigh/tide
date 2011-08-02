@@ -70,6 +70,10 @@ enyo.kind({
 		this.editor.setTheme('ace/theme/'+theme)
 	},
 	
+	getValue: function() {
+		this.editor.getSession().getValue()
+	},
+	
 	setValue: function(value) {
 		this.editor.getSession().setValue(value)
 	},
