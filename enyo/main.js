@@ -168,7 +168,7 @@ enyo.kind({
   		this.$.modePicker.setValue(this.prefs.get('mode'))
   	},
   	
-  	resizeHandler: function() {
+  	resizeListener: function() {
   		this.$.editor.refresh(
   			window.innerWidth+'px',
   			(window.innerHeight-54)+'px',
@@ -196,7 +196,7 @@ enyo.kind({
   	
   	handleOpen: function(inSender, file) {
 		this.$.readfile.call({ 'path': file })
-		this.resizeHandler()
+		this.resizeListener()
   	},
   	
   	readfile: function(inSender, inResponse, inRequest) {
@@ -210,7 +210,7 @@ enyo.kind({
 		enyo.keyboard.setResizesWindow(true)
 		this.refresh()
 		this.$.editor.resizeRenderer()
-		window.addEventListener('resize', enyo.bind(this, 'resizeHandler'), false)
+		window.addEventListener('resize', enyo.bind(this, 'resizeListener'), false)
   	}
   	
 })

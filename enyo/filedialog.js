@@ -56,47 +56,48 @@ enyo.kind({
 				{
 					layoutKind: "HFlexLayout",
 					width: '100%',
+					name: 'inner',
 					components: [
 						{
 							kind: 'List2',
 							name: 'dirlist',
-							height: '220px',
+							height: '198px',
 							flex: 1,
 							style: 'border-style:inset;',
 							onSetupRow: 'setupRow',
 							components: [
 								{kind: 'DirlistItem', name: 'diritem', onclick: 'diritemclick'}
 			    			]
+						},
+						{
+				  			layoutKind: "VFlexLayout",
+				  			pack: "center",
+				  			align: "center",
+				  			components: [
+			  					{kind: "CheckBox", name: 'showHidden', style: 'margin-left:8px;', checked: true},
+			          			{content: "Show Hidden", style: 'margin-left:8px; font-size: 90%;'},
+				      			{flex: 1},
+				      			{
+				      				kind: "Button",
+				      				caption: "Save/Open",
+				      				name: 'action',
+				      				width: '60px',
+				      				disabled: true,
+				      				onclick: "handleAction"
+				  				},
+				      			{
+				      				kind: "Button",
+				      				caption: "Cancel",
+				      				width: '60px',
+				      				onclick: 'close',
+				      				style: 'margin-top: 16px;'
+				  				},
+				  				{flex: 1}
+				  			]
 						}
 					]
 				}
 			]
-		},
-  		{
-  			layoutKind: "HFlexLayout",
-  			pack: "center",
-  			align: "center",
-  			components: [
-  				{kind: "HFlexBox", pack: 'center', align: "center", components: [
-  					{kind: "CheckBox", name: 'showHidden', style: 'margin-left:8px;', checked: true},
-          			{content: "Show Hidden", style: 'margin-left:8px; font-size: 90%;'}
-      			]},
-      			{flex: 2},
-      			{
-      				kind: "Button",
-      				caption: "Cancel",
-      				flex: 1,
-      				onclick: 'close'
-  				},
-  				{
-      				kind: "Button",
-      				caption: "Save/Open",
-      				name: 'action',
-      				flex: 1,
-      				disabled: true,
-      				onclick: "handleAction"
-  				},
-  			]
 		}
 	],
 	
@@ -208,6 +209,19 @@ enyo.kind({
 			this.$.action.setCaption('Save')
 		}
 		this.$.readdir.call({ 'path': this.$.path.getContent() })
+	},
+	
+	resizeListener: function() {
+		if (this.showing) {
+			this.$.dirlist.applyStyle('height',window.innerHeight-200+'px')
+			this.resized()
+			this.$.dirlist.refresh()
+		}
+  	},
+	
+	create: function() {
+		this.inherited(arguments)
+		window.addEventListener('resize', enyo.bind(this, 'resizeListener'), false)
 	}
 
 })
