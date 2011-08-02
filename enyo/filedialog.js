@@ -79,8 +79,8 @@ enyo.kind({
 				  			pack: "center",
 				  			align: "center",
 				  			components: [
-			  					{kind: "CheckBox", name: 'showHidden', style: 'margin-left:8px;', checked: true},
-			          			{content: "Show Hidden", style: 'margin-left:8px; font-size: 90%;'},
+			  					{kind: "CheckBox", name: 'showHidden', style: 'margin-left:8px;', checked: false, onChange: 'toggleHidden'},
+			          			{content: "Show Hidden", style: 'margin-left:8px; font-size: 70%;'},
 				      			{flex: 1},
 				      			{
 				      				kind: "Button",
@@ -105,6 +105,10 @@ enyo.kind({
 			]
 		}
 	],
+	
+	toggleHidden: function(inSender) {
+		this.$.dirlist.refresh()
+	},
 	
 	inputChange: function(inSender, inEvent, inMessage) {
 		if (inMessage)
@@ -184,6 +188,8 @@ enyo.kind({
 		var path = info.path
 		path = path.split('/')
 		path = path[path.length-1]
+		if (path[0] == '.' && path != '..')
+			this.$.diritem.setShowing(this.$.showHidden.checked)
 		if (info.isFile)
 			this.$.diritem.$.icon.addClass('file')
 		else
