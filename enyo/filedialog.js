@@ -48,7 +48,7 @@ enyo.kind({
 					layoutKind: "HFlexLayout",
 					width: '100%',
 					components: [
-						{kind: 'IconButton', icon: 'images/folder-new.png', pack: 'center', align: 'center'},
+						{kind: 'IconButton', icon: 'images/folder-new.png', pack: 'center', align: 'center', disabled: true},
 						{
 							kind: "Input", onchange: "inputChange", changeOnInput: true,
 							width: '100%', autoCapitalize: 'lowercase', 
