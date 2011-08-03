@@ -16,6 +16,7 @@
 
        TODO:
 			* Save dialog set to last open file
+            * Dropbox / Box.net support
 			* Implement mkdir support
 			* Highlight / Cut / Copy / Paste support
 			* Better keyboard handling (might require manual mode)
