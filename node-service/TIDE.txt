@@ -14,14 +14,35 @@
 
 =================================== v0.0.15 ====================================
 
-		CHANGELOG:
-			- v0.0.14: Add this awesome changelog
+       TODO:
+			* Save dialog set to last open file
+			* Implement mkdir support
+			* Highlight / Cut / Copy / Paste support
+			* Better keyboard handling (might require manual mode)
+			* Handle multiple files
+			* Printing support
 
+  CHANGELOG:
+            *   v0.0.15 - Backfill changelog
 
-		TODO:
-			- Save dialog set to last open file
-			- Implement mkdir support
-			- Highlight / Cut / Copy / Paste support
-			- Better keyboard handling (might require manual mode)
-			- Handle multiple files
-			- Printing support
+			*   v0.0.14 - Add this awesome changelog
+
+            *   v0.0.13 - Saving files works
+                        - Hidden files toggle works
+
+            *   v0.0.11 - Unjail node service
+
+            *   v0.0.10 - File dialog improvements
+                        - Auto set syntax highlight mode
+                          based on file extension
+
+            *    v0.0.8 - Remove demo documents
+
+            *    v0.0.5 - Working prefs menu
+                        - Properly size editor area
+                        - Use fullscreen mode
+                        - Add nice buttons to toolbar
+
+            *    v0.0.3 - Disable text highlighting for better scrolling
+                        - Switch name from Editah to Tide
+                        - Add more demo docs
