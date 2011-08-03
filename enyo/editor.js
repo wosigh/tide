@@ -113,4 +113,5 @@ enyo.kind({
 	redo: function() {
 		this.editor.redo()
 	}
+	
 })

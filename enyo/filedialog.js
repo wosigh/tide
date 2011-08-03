@@ -138,18 +138,17 @@ enyo.kind({
 		}
 	},
 	
-  	readdir: function(inSender, inResponse, inRequest) {
-  		if (inResponse.returnValue) {
+  	readdir: function(inSender, files) {
+  		this.warn(files)
+  		if (files) {
 	  		this.data = []
-	  		this.dataSize = inResponse.files.length
+	  		this.dataSize = files.length
 	  		var base = '/'
 	  		if (this.$.path.getContent() != '/')
 	  			base = this.$.path.getContent() + '/'
-	  		for (i in inResponse.files)
-	  			this.$.stat.call({ 'path': base + inResponse.files[i] })
-		} else {
-			this.error(inResponse)
-		}
+	  		for (i in files)
+	  			this.$.stat.call({ 'path': base + files[i] })
+  		}
   	},
   	
   	sortByPath: function(a ,b) {

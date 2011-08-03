@@ -218,7 +218,7 @@ enyo.kind({
 		enyo.setFullScreen(true)
 		enyo.keyboard.setResizesWindow(true)
 		this.refresh()
-		this.$.editor.resizeRenderer()
+		this.resizeListener()
 		window.addEventListener('resize', enyo.bind(this, 'resizeListener'), false)
 		this.$.readfile.call({ 'path': 'TIDE.txt' })
   	}
