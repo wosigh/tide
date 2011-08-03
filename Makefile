@@ -6,9 +6,9 @@ ace/build/src/ace.js:
 prepare:
 	git submodule update --init --recursive
 	cd ace;\
-	git remote set-url --push origin git@git.webos-internals.org:js/ace;\
+	git remote set-url --push origin git@github.com:PuffTheMagic/ace.git;\
 	cd support/pilot;\
-	git remote set-url --push origin git@git.webos-internals.org:js/pilot
+	git remote set-url --push origin git@github.com:PuffTheMagic/pilot.git
 	
 package: ace/build/src/ace.js
 	palm-package -X excludes.txt . package node-service
