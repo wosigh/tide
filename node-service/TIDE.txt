@@ -12,17 +12,19 @@
 | '--------------' || '--------------' || '--------------' || '--------------' |
  '----------------'  '----------------'  '----------------'  '----------------' 
 
-=================================== v0.0.17 ====================================
+=================================== v0.0.18 ====================================
 
        TODO:
             * Dropbox / Box.net support
 			* Implement mkdir support
 			* Highlight / Cut / Copy / Paste support
-			* Better keyboard handling (might require manual mode)
 			* Handle multiple files/sessions
 			* Printing support
 
   CHANGELOG:
+            *   v0.0.18 - Add highlight support for Scala, OCaml, SCAD, Groovy
+                        - Add pref to show/hide gutter
+
             *   v0.0.17 - More file dialog fixes
 
             *   v0.0.16 - Improved BT keyboard support

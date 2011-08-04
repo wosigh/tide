@@ -28,6 +28,10 @@ enyo.kind({
 		var scss = require("ace/mode/scss").Mode
 		var svg = require("ace/mode/svg").Mode
 		var xml = require("ace/mode/xml").Mode
+		var ocaml = require("ace/mode/ocaml").Mode
+		var groovy = require("ace/mode/groovy").Mode
+		var scala = require("ace/mode/scala").Mode
+		var scad = require("ace/mode/scad").Mode
 		this.modes = {
 			'text': new text(),
 			'c_cpp': new c_cpp(),
@@ -45,7 +49,11 @@ enyo.kind({
 			'ruby': new ruby(),
 			'scss': new scss(),
 			'svg': new svg(),
-			'xml': new xml()
+			'xml': new xml(),
+			'ocaml': new ocaml(),
+			'scad': new scad(),
+			'scala': new scala(),
+			'groovy': new groovy(),
 		}
 		
 	},
@@ -92,6 +100,10 @@ enyo.kind({
 	
 	setMode: function(mode) {
 		this.editor.getSession().setMode(this.modes[mode])
+	},
+	
+	showGutter: function(value) {
+		this.editor.renderer.setShowGutter(value)
 	},
 	
 	resizeRenderer: function() {

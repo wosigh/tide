@@ -10,7 +10,8 @@ function Prefs() {
 		showInvisibles: true,//
 		showPrintMargin: true,
 		useWordWrap: true,
-		highlightActiveLine: true
+		highlightActiveLine: true,
+		showGutter: true,
 		
 	}
 	
