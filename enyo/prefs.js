@@ -87,7 +87,9 @@ enyo.kind({
 		      			{kind: "HFlexBox", align: "center", height: "32px", components: [
 		          			{content: "Soft Tabs", flex: 1},
 		          			{kind: "CheckBox", name: 'useSoftTabs'}
-		      			]}
+		      			]},
+		      			{flex:1}
+		      			
 		  			]
 				},
 				{
@@ -107,6 +109,10 @@ enyo.kind({
 		      			{kind: "HFlexBox", align: "center", height: "32px", components: [
 		          			{content: "Highlight Active Line", flex: 1},
 		          			{kind: "CheckBox", name: 'highlightActiveLine'}
+		      			]},
+		      			{kind: "HFlexBox", align: "center", height: "32px", components: [
+		          			{content: "Show Gutter", flex: 1},
+		          			{kind: "CheckBox", name: 'showGutter'}
 		      			]}
 		  			]
 				}
@@ -137,6 +143,7 @@ enyo.kind({
 		this.$.showPrintMargin.setChecked(this.prefs.get('showPrintMargin'))
 		this.$.useWordWrap.setChecked(this.prefs.get('useWordWrap'))
 		this.$.highlightActiveLine.setChecked(this.prefs.get('highlightActiveLine'))
+		this.$.showGutter.setChecked(this.prefs.get('showGutter'))
 	},
 	
 	closePrefs: function(inSender, inEvent) {
@@ -148,6 +155,7 @@ enyo.kind({
 		this.prefs.set('showPrintMargin', this.$.showPrintMargin.checked)
 		this.prefs.set('useWordWrap', this.$.useWordWrap.checked)
 		this.prefs.set('highlightActiveLine', this.$.highlightActiveLine.checked)
+		this.prefs.set('showGutter', this.$.showGutter.checked)
 		this.doClose()
 		this.close()
 	},
