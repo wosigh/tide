@@ -134,7 +134,8 @@ enyo.kind({
 	
 	diritemclick: function(inSender, inEvent, rowIndex) {
 		if (this.$.dirlist.data[rowIndex].isFile) {
-			this.$.filename.setValue(this.$.dirlist.data[rowIndex].path)
+			var file = this.$.dirlist.data[rowIndex].path
+			this.$.filename.setValue(file.substring(file.lastIndexOf('/')+1))
 			this.$.action.setDisabled(false)
 		} else {
 			this.$.filename.setValue('')
@@ -226,10 +227,11 @@ enyo.kind({
 	},
 	
 	handleAction: function() {
+		var file = this.$.path.getContent()+'/'+this.$.filename.getValue()
 		if (this.type == 'open')
-			this.doFileOpen(this.$.filename.getValue())
+			this.doFileOpen(file)
 		else if (this.type == 'save')
-			this.doFileSave(this.$.path.getContent()+'/'+this.$.filename.getValue())
+			this.doFileSave(file)
 		this.close()
 	},
 	
@@ -248,11 +250,12 @@ enyo.kind({
 		if (file.length > 0 && file[0] == '/') {
 			this.$.path.setContent(file.substring(0,file.lastIndexOf('/')))
 			this.$.filename.setValue(file.substring(file.lastIndexOf('/')+1))
+			this.$.action.setDisabled(false)
 		} else {
 			this.$.path.setContent('/media/internal')
 			this.$.filename.setValue('')
+			this.$.action.setDisabled(true)
 		}	
-		this.$.action.setDisabled(true)
 		if (this.type == 'open') {
 			this.$.title.setContent('Open File')
 			this.$.action.setCaption('Open')
