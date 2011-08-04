@@ -42,13 +42,17 @@ enyo.kind({
 			  			{caption: 'CoffeeScript', value: 'coffee'},
 			  			{caption: 'C#', value: 'csharp'},
 			  			{caption: 'CSS', value: 'css'},
+			  			{caption: 'Groovy', value: 'groovy'},
 			  			{caption: 'HTML', value: 'html'},
 			  			{caption: 'Java', value: 'java'},
 			  			{caption: 'JavaScript', value: 'javascript'},
 			  			{caption: 'JSON', value: 'json'},
+			  			{caption: 'OCaml', value: 'ocaml'},
 			  			{caption: 'Perl', value: 'perl'},
 			  			{caption: 'PHP', value: 'php'},
 			  			{caption: 'Python', value: 'python'},
+			  			{caption: 'SCAD', value: 'scad'},
+			  			{caption: 'Scala', value: 'scala'},
 			  			{caption: 'Ruby', value: 'ruby'},
 			  			{caption: 'SCSS', value: 'scss'},
 			  			{caption: 'SVG', value: 'svg'},
@@ -106,6 +110,14 @@ enyo.kind({
             mode = "json";
         } else if (/^.*\.(pl|pm)$/i.test(filename)) {
             mode = "perl";
+        }  else if (/^.*\.(ml|mli)$/i.test(filename)) {
+            mode = "ocaml";
+        } else if (/^.*\.(groovy)$/i.test(filename)) {
+            mode = "groovy";
+        } else if (/^.*\.(scala)$/i.test(filename)) {
+            mode = "scala";
+        } else if (/^.*\.(scad)$/i.test(filename)) {
+            mode = "scad";
         }
         this.changeMode(null,mode)
   	},
@@ -194,6 +206,7 @@ enyo.kind({
   		this.$.editor.highlightActiveLine(this.prefs.get('highlightActiveLine'))
   		this.$.editor.useWordWrap(this.prefs.get('useWordWrap'))
   		this.$.editor.useSoftTabs(this.prefs.get('useSoftTabs'))
+  		this.$.editor.showGutter(this.prefs.get('showGutter'))
   		
   		this.$.editor.setMode(this.prefs.get('mode'))
 		this.$.modePicker.setValue(this.prefs.get('mode'))
