@@ -61,18 +61,32 @@ enyo.kind({
 				{
 					layoutKind: "HFlexLayout",
 					width: '100%',
-					name: 'inner',
 					components: [
 						{
-							kind: 'List2',
-							name: 'dirlist',
-							height: '198px',
-							flex: 1,
+							layoutKind: "VFlexLayout",
+							width: '100%',
+							name: 'inner',
 							style: 'border-style:inset;',
-							onSetupRow: 'setupRow',
+							pack: 'center',
 							components: [
-								{kind: 'DirlistItem', name: 'diritem', onclick: 'diritemclick'}
-			    			]
+								{
+									layoutKind: "HFlexLayout", components: [
+										{flex:1},
+										{kind: 'SpinnerLarge', name: 'fdSpinner', showing: true},
+										{flex:1}
+									]
+								},
+								{
+									kind: 'List2',
+									name: 'dirlist',
+									height: '198px',
+									flex: 1,
+									onSetupRow: 'setupRow',
+									components: [
+										{kind: 'DirlistItem', name: 'diritem', onclick: 'diritemclick'}
+					    			]
+								}
+							]
 						},
 						{
 				  			layoutKind: "VFlexLayout",
@@ -107,6 +121,7 @@ enyo.kind({
 	],
 	
 	toggleHidden: function(inSender) {
+		this.prepareList()
 		this.$.dirlist.refresh()
 	},
 	
@@ -138,17 +153,18 @@ enyo.kind({
 		}
 	},
 	
-  	readdir: function(inSender, files) {
-  		this.warn(files)
-  		if (files) {
-	  		this.data = []
-	  		this.dataSize = files.length
+  	readdir: function(inSender, inResponse, inRequest) {
+		if (inResponse.returnValue) {
+			this.warn(inResponse.files)
+	  		this.dataSize = inResponse.files.length
 	  		var base = '/'
 	  		if (this.$.path.getContent() != '/')
 	  			base = this.$.path.getContent() + '/'
-	  		for (i in files)
-	  			this.$.stat.call({ 'path': base + files[i] })
-  		}
+	  		for (i in inResponse.files)
+				this.$.stat.call({ 'path': base + inResponse.files[i] })
+			} else {
+				this.error(inResponse)
+		}
   	},
   	
   	sortByPath: function(a ,b) {
@@ -173,10 +189,12 @@ enyo.kind({
   		if (inResponse.returnValue) {
 	  		this.data.push(inResponse)
 	  		if (this.data.length == this.dataSize) {
+	  			this.$.dirlist.setShowing(true)
+	  			this.$.fdSpinner.setShowing(false)
 	  			this.data.sort(enyo.bind(this,'sortByType'))
-	  			for (i in this.data)
-					this.$.dirlist.data.push(this.data[i])
+	  			this.prepareList()
 				this.$.dirlist.refresh()
+				this.resizeListener()
 	  		}
   		} else {
   			this.error(inResponse)
@@ -184,16 +202,29 @@ enyo.kind({
   	},
 	
 	setupRow: function(inSender, info, inIndex) {
+		this.warn(info)
 		var path = info.path
 		path = path.split('/')
 		path = path[path.length-1]
-		if (path[0] == '.' && path != '..')
-			this.$.diritem.setShowing(this.$.showHidden.checked)
 		if (info.isFile)
 			this.$.diritem.$.icon.addClass('file')
 		else
 			this.$.diritem.$.icon.addClass('folder')
 		this.$.diritem.$.file.setContent(path)
+	},
+	
+	prepareList: function() {
+		this.$.dirlist.data = []
+		if (this.$.path.getContent() != '/')
+			this.$.dirlist.data.push({path:'..',isDirectory:true,isFile:false})
+		for (i in this.data) {
+			var path = this.data[i].path
+			path = path.split('/')
+			path = path[path.length-1]
+			if (!this.$.showHidden.checked && path[0] == '.')
+				continue
+			this.$.dirlist.data.push(this.data[i])
+		}
 	},
 	
 	handleAction: function() {
@@ -205,16 +236,16 @@ enyo.kind({
 	},
 	
 	clear: function() {
-		this.$.dirlist.data = []
-		if (this.$.path.getContent() != '/')
-			this.$.dirlist.data.push({path:'..',isDirectory:true,isFile:false})
+		this.data = []
+		this.prepareList()
 		this.$.dirlist.refresh()
+		this.$.dirlist.setShowing(false)
+		this.$.fdSpinner.setShowing(true)
 	},
 	
 	display: function(type) {
 		this.openAtTopCenter()
 		this.clear()
-		this.data = []
 		this.type = type
 		this.$.filename.setValue('')
 		this.$.action.setDisabled(true)
@@ -230,6 +261,7 @@ enyo.kind({
 	
 	resizeListener: function() {
 		if (this.showing) {
+			this.$.inner.applyStyle('height',window.innerHeight-200+'px')
 			this.$.dirlist.applyStyle('height',window.innerHeight-200+'px')
 			this.resized()
 			this.$.dirlist.refresh()

@@ -15,20 +15,16 @@
 =================================== v0.0.16 ====================================
 
        TODO:
-            * Fix tab key
-            * Fix scrolling down with finger when bt keyboard is enabled
-            * Make new doc button do something
 			* Save dialog set to last open file
             * Dropbox / Box.net support
 			* Implement mkdir support
-			* Highlight / Cut / Copy / Paste support (for touch events)
+			* Highlight / Cut / Copy / Paste support
 			* Better keyboard handling (might require manual mode)
-			* Handle multiple files
+			* Handle multiple files/sessions
 			* Printing support
 
   CHANGELOG:
-            *   v0.0.16 - Add support for BT arrow keys
-                        - Ctrl-A,Ctrl-Z,Ctrl-Y,Ctrl-D shortcuts work
+            *   v0.0.16 - Improved BT keyboard support
 
             *   v0.0.15 - Backfill changelog
 

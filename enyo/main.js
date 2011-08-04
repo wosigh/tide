@@ -20,7 +20,7 @@ enyo.kind({
 			components: [
 				{icon: 'images/cog.png', onclick: "preferences"},
 				{width: '16px'},
-				{icon: 'images/new.png'},
+				{icon: 'images/new.png', onclick: "newDoc"},
 				{icon: 'images/open.png', onclick: "openDialog"},
 				{icon: 'images/save.png', onclick: "saveDialog"},
 				{width: '16px'},
@@ -124,6 +124,10 @@ enyo.kind({
 			onFileOpen: 'handleOpen',
 			onFileSave: 'handleSave'
 		})
+  	},
+
+  	newDoc: function() {
+  		this.$.editor.setValue('')
   	},
   	
   	openDialog: function() {
