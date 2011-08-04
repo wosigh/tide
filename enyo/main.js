@@ -4,6 +4,7 @@ enyo.kind({
   	kind: enyo.VFlexBox,
   	
   	prefs: new Prefs(),
+  	currentFile: '',
   	
   	components: [
   		{ name: 'readfile', kind: 'PalmService',
@@ -131,11 +132,11 @@ enyo.kind({
   	},
   	
   	openDialog: function() {
-  		this.$.filedialog.display('open')
+  		this.$.filedialog.display('open','')
   	},
   	
   	saveDialog: function() {
-  		this.$.filedialog.display('save')
+  		this.$.filedialog.display('save',this.currentFile)
   	},
   	
   	toggleSearch: function() {
@@ -199,7 +200,6 @@ enyo.kind({
   	},
   	
   	handleSave: function(inSender, file) {
-  		this.error(this.$.editor.getValue())
   		this.$.writefile.call({ 'path': file, 'content': this.$.editor.getValue()})
   	},
   	
@@ -213,6 +213,7 @@ enyo.kind({
   	},
   	
   	readfile: function(inSender, inResponse, inRequest) {
+  		this.currentFile = inResponse.path
   		this.setModeByExtension(inResponse.path)
   		this.$.editor.setValue(inResponse.content)
   	},

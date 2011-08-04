@@ -15,7 +15,6 @@
 =================================== v0.0.16 ====================================
 
        TODO:
-			* Save dialog set to last open file
             * Dropbox / Box.net support
 			* Implement mkdir support
 			* Highlight / Cut / Copy / Paste support
@@ -25,6 +24,7 @@
 
   CHANGELOG:
             *   v0.0.16 - Improved BT keyboard support
+                        - Fixed save file dialog
 
             *   v0.0.15 - Backfill changelog
 

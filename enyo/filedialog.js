@@ -155,7 +155,6 @@ enyo.kind({
 	
   	readdir: function(inSender, inResponse, inRequest) {
 		if (inResponse.returnValue) {
-			this.warn(inResponse.files)
 	  		this.dataSize = inResponse.files.length
 	  		var base = '/'
 	  		if (this.$.path.getContent() != '/')
@@ -202,7 +201,6 @@ enyo.kind({
   	},
 	
 	setupRow: function(inSender, info, inIndex) {
-		this.warn(info)
 		var path = info.path
 		path = path.split('/')
 		path = path[path.length-1]
@@ -231,7 +229,7 @@ enyo.kind({
 		if (this.type == 'open')
 			this.doFileOpen(this.$.filename.getValue())
 		else if (this.type == 'save')
-			this.doFileSave(this.$.filename.getValue())
+			this.doFileSave(this.$.path.getContent()+'/'+this.$.filename.getValue())
 		this.close()
 	},
 	
@@ -243,11 +241,17 @@ enyo.kind({
 		this.$.fdSpinner.setShowing(true)
 	},
 	
-	display: function(type) {
+	display: function(type, file) {
 		this.openAtTopCenter()
 		this.clear()
 		this.type = type
-		this.$.filename.setValue('')
+		if (file.length > 0 && file[0] == '/') {
+			this.$.path.setContent(file.substring(0,file.lastIndexOf('/')))
+			this.$.filename.setValue(file.substring(file.lastIndexOf('/')+1))
+		} else {
+			this.$.path.setContent('/media/internal')
+			this.$.filename.setValue('')
+		}	
 		this.$.action.setDisabled(true)
 		if (this.type == 'open') {
 			this.$.title.setContent('Open File')
