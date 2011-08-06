@@ -22,6 +22,9 @@
 			* Printing support
 
   CHANGELOG:
+            *   v0.0.19 - Mostly working scroller (still needs a little work)
+                        - Add back text selection (no copy/cut/paste yet)
+
             *   v0.0.18 - Add highlight support for Scala, OCaml, SCAD, Groovy
                         - Add pref to show/hide gutter
 
