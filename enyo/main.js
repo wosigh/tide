@@ -62,9 +62,14 @@ enyo.kind({
 				}
 			]
 		},
-		{
-			kind: 'Editah.Editor', name: 'editor', flex: 1
-		},
+		{kind: enyo.HFlexBox, components: [
+			{
+				kind: 'Editah.Editor', name: 'editor', flex: 1
+			},
+			{
+				kind: 'VSlider', name: 'slider', width: '28px'
+			}
+		]},
 		{
 			kind: 'Toolbar',
 			name: 'searchbar',
@@ -189,11 +194,10 @@ enyo.kind({
   	},
   	
   	resizeListener: function() {
-  		this.$.editor.refresh(
-  			window.innerWidth+'px',
-  			(window.innerHeight-54)+'px',
-  			this.prefs.get('fontSize')
-		)
+  		var height = (window.innerHeight-54)+'px'
+  		var width = (window.innerWidth-28)+'px'
+  		this.$.slider.applyStyle('height', height)
+  		this.$.editor.refresh(width,height,this.prefs.get('fontSize'))
   		this.$.editor.resizeRenderer()
   	},
   	
