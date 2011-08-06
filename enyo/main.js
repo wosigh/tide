@@ -86,7 +86,7 @@ enyo.kind({
   	],
   	
   	sliderChange: function(inSender, percent) {
-  		this.$.editor.scrollByPercent(percent/100)
+  		this.$.editor.scrollByPercent(percent/100,window.innerHeight-89)
   	},
   	
   	setModeByExtension: function(filename) {
