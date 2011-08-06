@@ -106,6 +106,10 @@ enyo.kind({
 		this.editor.renderer.setShowGutter(value)
 	},
 	
+	scrollByPercent: function(percentY) {
+		this.editor.renderer.scrollByPercent(percentY)
+	},
+	
 	resizeRenderer: function() {
 		this.editor.resize()
 	},

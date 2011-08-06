@@ -67,7 +67,7 @@ enyo.kind({
 				kind: 'Editah.Editor', name: 'editor', flex: 1
 			},
 			{
-				kind: 'VSlider', name: 'slider', width: '28px'
+				kind: 'VSlider', name: 'slider', width: '28px', onChanging: 'sliderChange'
 			}
 		]},
 		{
@@ -84,6 +84,10 @@ enyo.kind({
 			]
 		}
   	],
+  	
+  	sliderChange: function(inSender, percent) {
+  		this.$.editor.scrollByPercent(percent/100)
+  	},
   	
   	setModeByExtension: function(filename) {
   		var mode = "text";
