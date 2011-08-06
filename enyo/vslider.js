@@ -1,3 +1,15 @@
+/* Copyright 2009-2011 Hewlett-Packard Development Company, L.P. All rights reserved. */
+/**
+A control that presents a range of selection options in the form of a horizontal
+slider with a control knob that can be tapped and dragged to the desired
+location.
+
+	{kind: "Slider", onChanging: "sliderChanging", onChange: "sliderChange"}
+
+The onChanging event is fired when dragging the control knob. The onChange
+event is fired when the position is set, either by finishing a drag or by
+tapping the bar.
+*/
 enyo.kind({
 	name: "VSlider",
 	kind: enyo.ProgressBar,
@@ -33,43 +45,41 @@ enyo.kind({
 		}
 	},
 	renderPosition: function(inPercent) {
-		this.$.button.applyStyle("top",  inPercent + "%");
+		this.$.button.applyStyle("left",  inPercent + "%");
 	},
 	renderPositionDirect: function(inDomStyle, inPercent) {
-		inDomStyle.top = inPercent + "%";
+		inDomStyle.left = inPercent + "%";
 	},
 	canAnimate: function() {
 		return this.$.button.hasNode();
 	},
 	beginAnimation: function(inSender, inStart, inEnd) {
-		this.$.button.domStyles.top = inEnd + "%";
+		this.$.button.domStyles.left = inEnd + "%";
 		if (this.$.button.hasNode()) {
 			inSender.setNode(this.$.button.node);
 			inSender.style = this.$.button.node.style;
 		}
 		this.doBeginAnimation();
 	},
-	calcHeight: function() {
+	calcWidth: function() {
 		var n = this.$.bar.hasNode();
-		return n.offsetHeight;
+		return n.offsetWidth;
 	},
-	calcEventPosition: function(inY) {
+	calcEventPosition: function(inX) {
 		var o = this.$.bar.getOffset();
-		var y = inY - o.top;
-		this.log(inY, o.top, y / this.calcHeight())
-		return (y / this.calcHeight()) * (this.maximum - this.minimum) + this.minimum;
+		var x = inX - o.left;
+		return (x / this.calcWidth()) * (this.maximum - this.minimum) + this.minimum;
 	},
 	// drag processing
 	dragstartHandler: function(inSender, inEvent) {
 		this.handlingDrag = true;
-		this._height = this.calcHeight();
+		this._width = this.calcWidth();
 		this.$.button.setDown(true);
 		return true;
 	},
 	dragHandler: function(inSender, inEvent) {
 		if (this.handlingDrag) {
-			var p = this.calcEventPosition(inEvent.pageY);
-			this.error(p)
+			var p = this.calcEventPosition(inEvent.pageX);
 			this.dragChange = true;
 			this.setPositionImmediate(p);
 			this.dragChange = false;
@@ -96,7 +106,7 @@ enyo.kind({
 	clickHandler: function(inSender, e) {
 		if (this.tapPosition && (e.dispatchTarget != this.$.button)) {
 			this.$.animator.stop();
-			var p = this.calcEventPosition(e.pageY);
+			var p = this.calcEventPosition(e.pageX);
 			this._clicked = true;
 			this.setPosition(p);
 			if (!this.animatePosition) {
