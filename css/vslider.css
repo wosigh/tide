@@ -5,7 +5,7 @@
 	z-index: 50;
 	background: url(../images/slider-handle.png) left top no-repeat;
 	position: absolute;
-	margin: -14px -20px;
+	margin: -14px -15px;
 }
 
 .enyo-vslider-button.enyo-button-down {
@@ -17,18 +17,18 @@
 	FIXME: why in the heck does this work to properly position the progress
 	div inside this one?
 	*/
-	padding: 1px 0;
+	margin: 14px 0px;
 	position:relative;
 }
 
 .enyo-vslider-progress {
-	height: 10px;
-	border-width: 0px 4px;
-	-webkit-border-image: url(../images/vslider-track.png) 0 4 0 4 repeat repeat;
-	margin: 20px 0px;
+	width: 10px;
+	border-width: 4px 0px;
+	-webkit-border-image: url(../images/vslider-track.png) 4 0 4 0 repeat repeat;
+	margin: 0px 9px;
 	position:relative;
 }
 
 .enyo-vslider-inner {
-	margin: 0 -4px;
+	margin: -4px 0;
 }

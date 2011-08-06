@@ -194,10 +194,12 @@ enyo.kind({
   	},
   	
   	resizeListener: function() {
-  		var height = (window.innerHeight-54)+'px'
-  		var width = (window.innerWidth-28)+'px'
-  		this.$.slider.applyStyle('height', height)
-  		this.$.editor.refresh(width,height,this.prefs.get('fontSize'))
+  		this.$.slider.$.progress.applyStyle('height', (window.innerHeight-89)+'px')
+  		this.$.editor.refresh(
+  			(window.innerWidth-28)+'px',
+  			(window.innerHeight-54)+'px',
+  			this.prefs.get('fontSize')
+		)
   		this.$.editor.resizeRenderer()
   	},
   	

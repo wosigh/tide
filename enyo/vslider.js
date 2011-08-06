@@ -26,7 +26,7 @@ enyo.kind({
 	chrome: [
 		{name: "animator", kind: enyo.Animator, onBegin: "beginAnimation", onAnimate: "stepAnimation", onEnd: "endAnimation", onStop: "stopAnimation"},
 		// FIXME: this node exists so our entire height can encompass the margin used for centering this div
-		{className: "enyo-vslider-progress", components: [
+		{className: "enyo-vslider-progress", name: 'progress', components: [
 			{name: "bar", className: "enyo-vslider-inner", components: [
 				// NOTE: using a toggle so that mouseout doesn't abort down state
 				// manually setting down/up when dragging and on mouseup.
