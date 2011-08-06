@@ -5484,7 +5484,7 @@ exports.addCommandKeyListener = function(el, callback) {
  *
  * ***** END LICENSE BLOCK ***** */
 
-define('ace/editor', ['require', 'exports', 'module' , 'pilot/fixoldbrowsers', 'pilot/oop', 'pilot/event', 'pilot/lang', 'pilot/useragent', 'ace/keyboard/textinput', 'ace/mouse_handler', 'ace/touch_handler', 'ace/keyboard/keybinding', 'ace/edit_session', 'ace/search', 'ace/range', 'pilot/event_emitter'], function(require, exports, module) {
+define('ace/editor', ['require', 'exports', 'module' , 'pilot/fixoldbrowsers', 'pilot/oop', 'pilot/event', 'pilot/lang', 'pilot/useragent', 'ace/keyboard/textinput', 'ace/mouse_handler', 'ace/keyboard/keybinding', 'ace/edit_session', 'ace/search', 'ace/range', 'pilot/event_emitter'], function(require, exports, module) {
 
 require("pilot/fixoldbrowsers");
 
@@ -5494,7 +5494,7 @@ var lang = require("pilot/lang");
 var useragent = require("pilot/useragent");
 var TextInput = require("ace/keyboard/textinput").TextInput;
 var MouseHandler = require("ace/mouse_handler").MouseHandler;
-var TouchHandler = require("ace/touch_handler").TouchHandler;
+//var TouchHandler = require("ace/touch_handler").TouchHandler;
 var KeyBinding = require("ace/keyboard/keybinding").KeyBinding;
 var EditSession = require("ace/edit_session").EditSession;
 var Search = require("ace/search").Search;
@@ -5510,8 +5510,8 @@ var Editor =function(renderer, session) {
     this.keyBinding = new KeyBinding(this);
 
     // TODO detect touch event support
-    if (useragent.isIPad || useragent.isTouchPad) {
-        this.$mouseHandler = new TouchHandler(this);
+    if (useragent.isIPad) {
+        //this.$mouseHandler = new TouchHandler(this);
     } else {
         this.$mouseHandler = new MouseHandler(this);
     }
@@ -7354,129 +7354,6 @@ var BrowserFocus = function(win) {
 exports.BrowserFocus = BrowserFocus;
 });
 /* ***** BEGIN LICENSE BLOCK *****
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * The contents of this file are subject to the Mozilla Public License Version
- * 1.1 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
- * for the specific language governing rights and limitations under the
- * License.
- *
- * The Original Code is Ajax.org Code Editor (ACE).
- *
- * The Initial Developer of the Original Code is
- * Ajax.org B.V.
- * Portions created by the Initial Developer are Copyright (C) 2010
- * the Initial Developer. All Rights Reserved.
- *
- * Contributor(s):
- *      Fabian Jakobs <fabian AT ajax DOT org>
- *
- * Alternatively, the contents of this file may be used under the terms of
- * either the GNU General Public License Version 2 or later (the "GPL"), or
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
- * in which case the provisions of the GPL or the LGPL are applicable instead
- * of those above. If you wish to allow use of your version of this file only
- * under the terms of either the GPL or the LGPL, and not to allow others to
- * use your version of this file under the terms of the MPL, indicate your
- * decision by deleting the provisions above and replace them with the notice
- * and other provisions required by the GPL or the LGPL. If you do not delete
- * the provisions above, a recipient may use your version of this file under
- * the terms of any one of the MPL, the GPL or the LGPL.
- *
- * ***** END LICENSE BLOCK ***** */
-
-define('ace/touch_handler', ['require', 'exports', 'module' , 'pilot/event'], function(require, exports, module) {
-
-var event = require("pilot/event");
-
-var TouchHandler = function(editor) {
-    this.editor = editor;
-    event.addListener(editor.container, "click", function(e) {
-        // does this only work on click?
-        editor.focus();
-    });
-    var mouseTarget = editor.renderer.getMouseEventTarget();
-    mouseTarget.ontouchstart = this.onTouchStart.bind(this);
-    mouseTarget.ontouchmove = this.onTouchMove.bind(this);
-    mouseTarget.ontouchend = this.onTouchEnd.bind(this);
-};
-
-(function() {
-
-    this.$scrollSpeed = 1;
-    this.setScrollSpeed = function(speed) {
-        this.$scrollSpeed = speed;
-    };
-    
-    this.getScrollSpeed = function() {
-        return this.$scrollSpeed;
-    };
-    
-    this.onTouchMove = function(e) {
-        e.preventDefault();
-        if (e.touches.length == 1) {
-            this.$moveCursor(e.touches[0]);
-        }
-        else if (e.touches.length == 2) {
-            if (!this.$scroll)
-                return;
-            
-            var touch = e.touches[0];
-            var diffX = this.$scroll.pageX - touch.pageX;
-            var diffY = this.$scroll.pageY - touch.pageY;
-            this.editor.renderer.scrollBy(diffX, diffY);
-
-            this.$scroll = {
-                pageX: touch.pageX,
-                pageY: touch.pageY,
-                ts: new Date().getTime() 
-            }
-        }
-    };
-    
-    this.$moveCursor = function(touch) {
-        var pageX = touch.pageX;
-        var pageY = touch.pageY;
-        
-        var editor = this.editor;
-        var pos = editor.renderer.screenToTextCoordinates(pageX, pageY);
-        pos.row = Math.max(0, Math.min(pos.row, editor.session.getLength()-1));
-        
-        editor.moveCursorToPosition(pos);
-        editor.renderer.scrollCursorIntoView();
-    };
-    
-    this.onTouchEnd = function(e) {        
-        //if (e.touches.length == 1) {
-            console.log("focus")
-            editor.focus();
-            //e.preventDefault();
-        //}
-    };
-    
-    this.onTouchStart = function(e) {
-        if (e.touches.length == 1) {
-            this.$moveCursor(e.touches[0]);
-        }
-        else if (e.touches.length == 2) {
-            e.preventDefault();
-            var touch = e.touches[0];
-            this.$scroll = {
-                pageX: touch.pageX,
-                pageY: touch.pageY
-            }
-        }
-    };
-
-}).call(TouchHandler.prototype);
-
-exports.TouchHandler = TouchHandler;
-});/* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
  * The contents of this file are subject to the Mozilla Public License Version
@@ -15515,42 +15392,6 @@ exports.create = create;
 
 
 });
-define("text/cockpit/ui/cli_view.css", [], "" +
-  "#cockpitInput { padding-left: 16px; }" +
-  "" +
-  ".cptOutput { overflow: auto; position: absolute; z-index: 999; display: none; }" +
-  "" +
-  ".cptCompletion { padding: 0; position: absolute; z-index: -1000; }" +
-  ".cptCompletion.VALID { background: #FFF; }" +
-  ".cptCompletion.INCOMPLETE { background: #DDD; }" +
-  ".cptCompletion.INVALID { background: #DDD; }" +
-  ".cptCompletion span { color: #FFF; }" +
-  ".cptCompletion span.INCOMPLETE { color: #DDD; border-bottom: 2px dotted #F80; }" +
-  ".cptCompletion span.INVALID { color: #DDD; border-bottom: 2px dotted #F00; }" +
-  "span.cptPrompt { color: #66F; font-weight: bold; }" +
-  "" +
-  "" +
-  ".cptHints {" +
-  "  color: #000;" +
-  "  position: absolute;" +
-  "  border: 1px solid rgba(230, 230, 230, 0.8);" +
-  "  background: rgba(250, 250, 250, 0.8);" +
-  "  -moz-border-radius-topleft: 10px;" +
-  "  -moz-border-radius-topright: 10px;" +
-  "  border-top-left-radius: 10px; border-top-right-radius: 10px;" +
-  "  z-index: 1000;" +
-  "  padding: 8px;" +
-  "  display: none;" +
-  "}" +
-  "" +
-  ".cptFocusPopup { display: block; }" +
-  ".cptFocusPopup.cptNoPopup { display: none; }" +
-  "" +
-  ".cptHints ul { margin: 0; padding: 0 15px; }" +
-  "" +
-  ".cptGt { font-weight: bold; font-size: 120%; }" +
-  "");
-
 define("text/cockpit/ui/request_view.css", [], "" +
   ".cptRowIn {" +
   "  display: box; display: -moz-box; display: -webkit-box;" +
@@ -15590,6 +15431,42 @@ define("text/cockpit/ui/request_view.css", [], "" +
   ".cptRowOutput td," +
   ".cptRowOutput th { border: 0; padding: 0 2px; }" +
   ".cptRowOutput .right { text-align: right; }" +
+  "");
+
+define("text/cockpit/ui/cli_view.css", [], "" +
+  "#cockpitInput { padding-left: 16px; }" +
+  "" +
+  ".cptOutput { overflow: auto; position: absolute; z-index: 999; display: none; }" +
+  "" +
+  ".cptCompletion { padding: 0; position: absolute; z-index: -1000; }" +
+  ".cptCompletion.VALID { background: #FFF; }" +
+  ".cptCompletion.INCOMPLETE { background: #DDD; }" +
+  ".cptCompletion.INVALID { background: #DDD; }" +
+  ".cptCompletion span { color: #FFF; }" +
+  ".cptCompletion span.INCOMPLETE { color: #DDD; border-bottom: 2px dotted #F80; }" +
+  ".cptCompletion span.INVALID { color: #DDD; border-bottom: 2px dotted #F00; }" +
+  "span.cptPrompt { color: #66F; font-weight: bold; }" +
+  "" +
+  "" +
+  ".cptHints {" +
+  "  color: #000;" +
+  "  position: absolute;" +
+  "  border: 1px solid rgba(230, 230, 230, 0.8);" +
+  "  background: rgba(250, 250, 250, 0.8);" +
+  "  -moz-border-radius-topleft: 10px;" +
+  "  -moz-border-radius-topright: 10px;" +
+  "  border-top-left-radius: 10px; border-top-right-radius: 10px;" +
+  "  z-index: 1000;" +
+  "  padding: 8px;" +
+  "  display: none;" +
+  "}" +
+  "" +
+  ".cptFocusPopup { display: block; }" +
+  ".cptFocusPopup.cptNoPopup { display: none; }" +
+  "" +
+  ".cptHints ul { margin: 0; padding: 0 15px; }" +
+  "" +
+  ".cptGt { font-weight: bold; font-size: 120%; }" +
   "");
 
 define("text/ace/css/editor.css", [], ".ace_editor {" +
@@ -15760,70 +15637,173 @@ define("text/ace/css/editor.css", [], ".ace_editor {" +
   "}" +
   "");
 
-define("text/build/demo/styles.css", [], "html {" +
-  "    height: 100%;" +
-  "    width: 100%;" +
+define("text/lib/ace/css/editor.css", [], ".ace_editor {" +
+  "    position: absolute;" +
   "    overflow: hidden;" +
+  "    font-family: Monaco, \"Menlo\", \"Courier New\", monospace;" +
+  "    font-size: 12px;" +
   "}" +
   "" +
-  "body {" +
+  ".ace_scroller {" +
+  "    position: absolute;" +
+  "    overflow-x: scroll;" +
+  "    overflow-y: hidden;" +
+  "}" +
+  "" +
+  ".ace_content {" +
+  "    position: absolute;" +
+  "    box-sizing: border-box;" +
+  "    -moz-box-sizing: border-box;" +
+  "    -webkit-box-sizing: border-box;" +
+  "}" +
+  "" +
+  ".ace_composition {" +
+  "    position: absolute;" +
+  "    background: #555;" +
+  "    color: #DDD;" +
+  "    z-index: 4;" +
+  "}" +
+  "" +
+  ".ace_gutter {" +
+  "    position: absolute;" +
+  "    overflow-x: hidden;" +
+  "    overflow-y: hidden;" +
+  "    height: 100%;" +
+  "}" +
+  "" +
+  ".ace_gutter-cell.ace_error {" +
+  "    background-image: url(\"data:image/gif,GIF89a%10%00%10%00%D5%00%00%F5or%F5%87%88%F5nr%F4ns%EBmq%F5z%7F%DDJT%DEKS%DFOW%F1Yc%F2ah%CE(7%CE)8%D18E%DD%40M%F2KZ%EBU%60%F4%60m%DCir%C8%16(%C8%19*%CE%255%F1%3FR%F1%3FS%E6%AB%B5%CA%5DI%CEn%5E%F7%A2%9A%C9G%3E%E0a%5B%F7%89%85%F5yy%F6%82%80%ED%82%80%FF%BF%BF%E3%C4%C4%FF%FF%FF%FF%FF%FF%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00!%F9%04%01%00%00%25%00%2C%00%00%00%00%10%00%10%00%00%06p%C0%92pH%2C%1A%8F%C8%D2H%93%E1d4%23%E4%88%D3%09mB%1DN%B48%F5%90%40%60%92G%5B%94%20%3E%22%D2%87%24%FA%20%24%C5%06A%00%20%B1%07%02B%A38%89X.v%17%82%11%13q%10%0Fi%24%0F%8B%10%7BD%12%0Ei%09%92%09%0EpD%18%15%24%0A%9Ci%05%0C%18F%18%0B%07%04%01%04%06%A0H%18%12%0D%14%0D%12%A1I%B3%B4%B5IA%00%3B\");" +
+  "    background-repeat: no-repeat;" +
+  "    background-position: 4px center;" +
+  "}" +
+  "" +
+  ".ace_gutter-cell.ace_warning {" +
+  "    background-image: url(\"data:image/gif,GIF89a%10%00%10%00%D5%00%00%FF%DBr%FF%DE%81%FF%E2%8D%FF%E2%8F%FF%E4%96%FF%E3%97%FF%E5%9D%FF%E6%9E%FF%EE%C1%FF%C8Z%FF%CDk%FF%D0s%FF%D4%81%FF%D5%82%FF%D5%83%FF%DC%97%FF%DE%9D%FF%E7%B8%FF%CCl%7BQ%13%80U%15%82W%16%81U%16%89%5B%18%87%5B%18%8C%5E%1A%94d%1D%C5%83-%C9%87%2F%C6%84.%C6%85.%CD%8B2%C9%871%CB%8A3%CD%8B5%DC%98%3F%DF%9BB%E0%9CC%E1%A5U%CB%871%CF%8B5%D1%8D6%DB%97%40%DF%9AB%DD%99B%E3%B0p%E7%CC%AE%FF%FF%FF%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00!%F9%04%01%00%00%2F%00%2C%00%00%00%00%10%00%10%00%00%06a%C0%97pH%2C%1A%8FH%A1%ABTr%25%87%2B%04%82%F4%7C%B9X%91%08%CB%99%1C!%26%13%84*iJ9(%15G%CA%84%14%01%1A%97%0C%03%80%3A%9A%3E%81%84%3E%11%08%B1%8B%20%02%12%0F%18%1A%0F%0A%03'F%1C%04%0B%10%16%18%10%0B%05%1CF%1D-%06%07%9A%9A-%1EG%1B%A0%A1%A0U%A4%A5%A6BA%00%3B\");" +
+  "    background-repeat: no-repeat;" +
+  "    background-position: 4px center;" +
+  "}" +
+  "" +
+  ".ace_editor .ace_sb {" +
+  "    position: absolute;" +
+  "    overflow-x: hidden;" +
+  "    overflow-y: scroll;" +
+  "    right: 0;" +
+  "}" +
+  "" +
+  ".ace_editor .ace_sb div {" +
+  "    position: absolute;" +
+  "    width: 1px;" +
+  "    left: 0;" +
+  "}" +
+  "" +
+  ".ace_editor .ace_print_margin_layer {" +
+  "    z-index: 0;" +
+  "    position: absolute;" +
   "    overflow: hidden;" +
   "    margin: 0;" +
-  "    padding: 0;" +
+  "    left: 0;" +
   "    height: 100%;" +
   "    width: 100%;" +
-  "    font-family: Arial, Helvetica, sans-serif, Tahoma, Verdana, sans-serif;" +
-  "    font-size: 12px;" +
-  "    background: rgb(14, 98, 165);" +
-  "    color: white;" +
   "}" +
   "" +
-  "#logo {" +
-  "    padding: 15px;" +
-  "    margin-left: 65px;" +
-  "}" +
-  "" +
-  "#editor {" +
+  ".ace_editor .ace_print_margin {" +
   "    position: absolute;" +
-  "    top:  0px;" +
-  "    left: 280px;" +
-  "    bottom: 0px;" +
-  "    right: 0px;" +
-  "    background: white;" +
+  "    height: 100%;" +
   "}" +
   "" +
-  "#controls {" +
-  "    padding: 5px;" +
+  ".ace_editor textarea {" +
+  "    position: fixed;" +
+  "    z-index: -1;" +
+  "    width: 10px;" +
+  "    height: 30px;" +
+  "    opacity: 0;" +
+  "    background: transparent;" +
+  "    appearance: none;" +
+  "    -moz-appearance: none;" +
+  "    border: none;" +
+  "    resize: none;" +
+  "    outline: none;" +
+  "    overflow: hidden;" +
   "}" +
   "" +
-  "#controls td {" +
-  "    text-align: right;" +
-  "}" +
-  "" +
-  "#controls td + td {" +
-  "    text-align: left;" +
-  "}" +
-  "" +
-  "#cockpitInput {" +
+  ".ace_layer {" +
+  "    z-index: 1;" +
   "    position: absolute;" +
-  "    left: 280px;" +
-  "    right: 0px;" +
-  "    bottom: 0;" +
-  "" +
-  "    border: none; outline: none;" +
-  "    font-family: consolas, courier, monospace;" +
-  "    font-size: 120%;" +
+  "    overflow: hidden;" +
+  "    white-space: nowrap;" +
+  "    height: 100%;" +
+  "    width: 100%;" +
   "}" +
   "" +
-  "#cockpitOutput {" +
-  "    padding: 10px;" +
-  "    margin: 0 15px;" +
-  "    border: 1px solid #AAA;" +
-  "    -moz-border-radius-topleft: 10px;" +
-  "    -moz-border-radius-topright: 10px;" +
-  "    border-top-left-radius: 4px; border-top-right-radius: 4px;" +
-  "    background: #DDD; color: #000;" +
-  "}");
+  ".ace_text-layer {" +
+  "    color: black;" +
+  "}" +
+  "" +
+  ".ace_cjk {" +
+  "    display: inline-block;" +
+  "    text-align: center;" +
+  "}" +
+  "" +
+  ".ace_cursor-layer {" +
+  "    z-index: 4;" +
+  "    cursor: text;" +
+  "    /* setting pointer-events: none; here will break mouse wheel scrolling in Safari */" +
+  "}" +
+  "" +
+  ".ace_cursor {" +
+  "    z-index: 4;" +
+  "    position: absolute;" +
+  "}" +
+  "" +
+  ".ace_cursor.ace_hidden {" +
+  "    opacity: 0.2;" +
+  "}" +
+  "" +
+  ".ace_line {" +
+  "    white-space: nowrap;" +
+  "}" +
+  "" +
+  ".ace_marker-layer {" +
+  "    cursor: text;" +
+  "    pointer-events: none;" +
+  "}" +
+  "" +
+  ".ace_marker-layer .ace_step {" +
+  "    position: absolute;" +
+  "    z-index: 3;" +
+  "}" +
+  "" +
+  ".ace_marker-layer .ace_selection {" +
+  "    position: absolute;" +
+  "    z-index: 4;" +
+  "}" +
+  "" +
+  ".ace_marker-layer .ace_bracket {" +
+  "    position: absolute;" +
+  "    z-index: 5;" +
+  "}" +
+  "" +
+  ".ace_marker-layer .ace_active_line {" +
+  "    position: absolute;" +
+  "    z-index: 2;" +
+  "}" +
+  "" +
+  ".ace_marker-layer .ace_selected_word {" +
+  "    position: absolute;" +
+  "    z-index: 6;" +
+  "    box-sizing: border-box;" +
+  "    -moz-box-sizing: border-box;" +
+  "    -webkit-box-sizing: border-box;" +
+  "}" +
+  "" +
+  ".ace_line .ace_fold {" +
+  "    cursor: pointer;" +
+  "}" +
+  "" +
+  ".ace_dragging .ace_marker-layer, .ace_dragging .ace_text-layer {" +
+  "  cursor: move;" +
+  "}" +
+  "");
 
 define("text/build_support/style.css", [], "body {" +
   "    margin:0;" +
@@ -16057,7 +16037,7 @@ define("text/build_support/style.css", [], "body {" +
   "" +
   "");
 
-define("text/demo/styles.css", [], "html {" +
+define("text/build/demo/styles.css", [], "html {" +
   "    height: 100%;" +
   "    width: 100%;" +
   "    overflow: hidden;" +
@@ -16121,328 +16101,6 @@ define("text/demo/styles.css", [], "html {" +
   "    border-top-left-radius: 4px; border-top-right-radius: 4px;" +
   "    background: #DDD; color: #000;" +
   "}");
-
-define("text/lib/ace/css/editor.css", [], ".ace_editor {" +
-  "    position: absolute;" +
-  "    overflow: hidden;" +
-  "    font-family: Monaco, \"Menlo\", \"Courier New\", monospace;" +
-  "    font-size: 12px;" +
-  "}" +
-  "" +
-  ".ace_scroller {" +
-  "    position: absolute;" +
-  "    overflow-x: scroll;" +
-  "    overflow-y: hidden;" +
-  "}" +
-  "" +
-  ".ace_content {" +
-  "    position: absolute;" +
-  "    box-sizing: border-box;" +
-  "    -moz-box-sizing: border-box;" +
-  "    -webkit-box-sizing: border-box;" +
-  "}" +
-  "" +
-  ".ace_composition {" +
-  "    position: absolute;" +
-  "    background: #555;" +
-  "    color: #DDD;" +
-  "    z-index: 4;" +
-  "}" +
-  "" +
-  ".ace_gutter {" +
-  "    position: absolute;" +
-  "    overflow-x: hidden;" +
-  "    overflow-y: hidden;" +
-  "    height: 100%;" +
-  "}" +
-  "" +
-  ".ace_gutter-cell.ace_error {" +
-  "    background-image: url(\"data:image/gif,GIF89a%10%00%10%00%D5%00%00%F5or%F5%87%88%F5nr%F4ns%EBmq%F5z%7F%DDJT%DEKS%DFOW%F1Yc%F2ah%CE(7%CE)8%D18E%DD%40M%F2KZ%EBU%60%F4%60m%DCir%C8%16(%C8%19*%CE%255%F1%3FR%F1%3FS%E6%AB%B5%CA%5DI%CEn%5E%F7%A2%9A%C9G%3E%E0a%5B%F7%89%85%F5yy%F6%82%80%ED%82%80%FF%BF%BF%E3%C4%C4%FF%FF%FF%FF%FF%FF%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00!%F9%04%01%00%00%25%00%2C%00%00%00%00%10%00%10%00%00%06p%C0%92pH%2C%1A%8F%C8%D2H%93%E1d4%23%E4%88%D3%09mB%1DN%B48%F5%90%40%60%92G%5B%94%20%3E%22%D2%87%24%FA%20%24%C5%06A%00%20%B1%07%02B%A38%89X.v%17%82%11%13q%10%0Fi%24%0F%8B%10%7BD%12%0Ei%09%92%09%0EpD%18%15%24%0A%9Ci%05%0C%18F%18%0B%07%04%01%04%06%A0H%18%12%0D%14%0D%12%A1I%B3%B4%B5IA%00%3B\");" +
-  "    background-repeat: no-repeat;" +
-  "    background-position: 4px center;" +
-  "}" +
-  "" +
-  ".ace_gutter-cell.ace_warning {" +
-  "    background-image: url(\"data:image/gif,GIF89a%10%00%10%00%D5%00%00%FF%DBr%FF%DE%81%FF%E2%8D%FF%E2%8F%FF%E4%96%FF%E3%97%FF%E5%9D%FF%E6%9E%FF%EE%C1%FF%C8Z%FF%CDk%FF%D0s%FF%D4%81%FF%D5%82%FF%D5%83%FF%DC%97%FF%DE%9D%FF%E7%B8%FF%CCl%7BQ%13%80U%15%82W%16%81U%16%89%5B%18%87%5B%18%8C%5E%1A%94d%1D%C5%83-%C9%87%2F%C6%84.%C6%85.%CD%8B2%C9%871%CB%8A3%CD%8B5%DC%98%3F%DF%9BB%E0%9CC%E1%A5U%CB%871%CF%8B5%D1%8D6%DB%97%40%DF%9AB%DD%99B%E3%B0p%E7%CC%AE%FF%FF%FF%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00!%F9%04%01%00%00%2F%00%2C%00%00%00%00%10%00%10%00%00%06a%C0%97pH%2C%1A%8FH%A1%ABTr%25%87%2B%04%82%F4%7C%B9X%91%08%CB%99%1C!%26%13%84*iJ9(%15G%CA%84%14%01%1A%97%0C%03%80%3A%9A%3E%81%84%3E%11%08%B1%8B%20%02%12%0F%18%1A%0F%0A%03'F%1C%04%0B%10%16%18%10%0B%05%1CF%1D-%06%07%9A%9A-%1EG%1B%A0%A1%A0U%A4%A5%A6BA%00%3B\");" +
-  "    background-repeat: no-repeat;" +
-  "    background-position: 4px center;" +
-  "}" +
-  "" +
-  ".ace_editor .ace_sb {" +
-  "    position: absolute;" +
-  "    overflow-x: hidden;" +
-  "    overflow-y: scroll;" +
-  "    right: 0;" +
-  "}" +
-  "" +
-  ".ace_editor .ace_sb div {" +
-  "    position: absolute;" +
-  "    width: 1px;" +
-  "    left: 0;" +
-  "}" +
-  "" +
-  ".ace_editor .ace_print_margin_layer {" +
-  "    z-index: 0;" +
-  "    position: absolute;" +
-  "    overflow: hidden;" +
-  "    margin: 0;" +
-  "    left: 0;" +
-  "    height: 100%;" +
-  "    width: 100%;" +
-  "}" +
-  "" +
-  ".ace_editor .ace_print_margin {" +
-  "    position: absolute;" +
-  "    height: 100%;" +
-  "}" +
-  "" +
-  ".ace_editor textarea {" +
-  "    position: fixed;" +
-  "    z-index: -1;" +
-  "    width: 10px;" +
-  "    height: 30px;" +
-  "    opacity: 0;" +
-  "    background: transparent;" +
-  "    appearance: none;" +
-  "    -moz-appearance: none;" +
-  "    border: none;" +
-  "    resize: none;" +
-  "    outline: none;" +
-  "    overflow: hidden;" +
-  "}" +
-  "" +
-  ".ace_layer {" +
-  "    z-index: 1;" +
-  "    position: absolute;" +
-  "    overflow: hidden;" +
-  "    white-space: nowrap;" +
-  "    height: 100%;" +
-  "    width: 100%;" +
-  "}" +
-  "" +
-  ".ace_text-layer {" +
-  "    color: black;" +
-  "}" +
-  "" +
-  ".ace_cjk {" +
-  "    display: inline-block;" +
-  "    text-align: center;" +
-  "}" +
-  "" +
-  ".ace_cursor-layer {" +
-  "    z-index: 4;" +
-  "    cursor: text;" +
-  "    /* setting pointer-events: none; here will break mouse wheel scrolling in Safari */" +
-  "}" +
-  "" +
-  ".ace_cursor {" +
-  "    z-index: 4;" +
-  "    position: absolute;" +
-  "}" +
-  "" +
-  ".ace_cursor.ace_hidden {" +
-  "    opacity: 0.2;" +
-  "}" +
-  "" +
-  ".ace_line {" +
-  "    white-space: nowrap;" +
-  "}" +
-  "" +
-  ".ace_marker-layer {" +
-  "    cursor: text;" +
-  "    pointer-events: none;" +
-  "}" +
-  "" +
-  ".ace_marker-layer .ace_step {" +
-  "    position: absolute;" +
-  "    z-index: 3;" +
-  "}" +
-  "" +
-  ".ace_marker-layer .ace_selection {" +
-  "    position: absolute;" +
-  "    z-index: 4;" +
-  "}" +
-  "" +
-  ".ace_marker-layer .ace_bracket {" +
-  "    position: absolute;" +
-  "    z-index: 5;" +
-  "}" +
-  "" +
-  ".ace_marker-layer .ace_active_line {" +
-  "    position: absolute;" +
-  "    z-index: 2;" +
-  "}" +
-  "" +
-  ".ace_marker-layer .ace_selected_word {" +
-  "    position: absolute;" +
-  "    z-index: 6;" +
-  "    box-sizing: border-box;" +
-  "    -moz-box-sizing: border-box;" +
-  "    -webkit-box-sizing: border-box;" +
-  "}" +
-  "" +
-  ".ace_line .ace_fold {" +
-  "    cursor: pointer;" +
-  "}" +
-  "" +
-  ".ace_dragging .ace_marker-layer, .ace_dragging .ace_text-layer {" +
-  "  cursor: move;" +
-  "}" +
-  "");
-
-define("text/node_modules/uglify-js/docstyle.css", [], "html { font-family: \"Lucida Grande\",\"Trebuchet MS\",sans-serif; font-size: 12pt; }" +
-  "body { max-width: 60em; }" +
-  ".title  { text-align: center; }" +
-  ".todo   { color: red; }" +
-  ".done   { color: green; }" +
-  ".tag    { background-color:lightblue; font-weight:normal }" +
-  ".target { }" +
-  ".timestamp { color: grey }" +
-  ".timestamp-kwd { color: CadetBlue }" +
-  "p.verse { margin-left: 3% }" +
-  "pre {" +
-  "  border: 1pt solid #AEBDCC;" +
-  "  background-color: #F3F5F7;" +
-  "  padding: 5pt;" +
-  "  font-family: monospace;" +
-  "  font-size: 90%;" +
-  "  overflow:auto;" +
-  "}" +
-  "pre.src {" +
-  "  background-color: #eee; color: #112; border: 1px solid #000;" +
-  "}" +
-  "table { border-collapse: collapse; }" +
-  "td, th { vertical-align: top; }" +
-  "dt { font-weight: bold; }" +
-  "div.figure { padding: 0.5em; }" +
-  "div.figure p { text-align: center; }" +
-  ".linenr { font-size:smaller }" +
-  ".code-highlighted {background-color:#ffff00;}" +
-  ".org-info-js_info-navigation { border-style:none; }" +
-  "#org-info-js_console-label { font-size:10px; font-weight:bold;" +
-  "  white-space:nowrap; }" +
-  ".org-info-js_search-highlight {background-color:#ffff00; color:#000000;" +
-  "  font-weight:bold; }" +
-  "" +
-  "sup {" +
-  "  vertical-align: baseline;" +
-  "  position: relative;" +
-  "  top: -0.5em;" +
-  "  font-size: 80%;" +
-  "}" +
-  "" +
-  "sup a:link, sup a:visited {" +
-  "  text-decoration: none;" +
-  "  color: #c00;" +
-  "}" +
-  "" +
-  "sup a:before { content: \"[\"; color: #999; }" +
-  "sup a:after { content: \"]\"; color: #999; }" +
-  "" +
-  "h1.title { border-bottom: 4px solid #000; padding-bottom: 5px; margin-bottom: 2em; }" +
-  "" +
-  "#postamble {" +
-  "  color: #777;" +
-  "  font-size: 90%;" +
-  "  padding-top: 1em; padding-bottom: 1em; border-top: 1px solid #999;" +
-  "  margin-top: 2em;" +
-  "  padding-left: 2em;" +
-  "  padding-right: 2em;" +
-  "  text-align: right;" +
-  "}" +
-  "" +
-  "#postamble p { margin: 0; }" +
-  "" +
-  "#footnotes { border-top: 1px solid #000; }" +
-  "" +
-  "h1 { font-size: 200% }" +
-  "h2 { font-size: 175% }" +
-  "h3 { font-size: 150% }" +
-  "h4 { font-size: 125% }" +
-  "" +
-  "h1, h2, h3, h4 { font-family: \"Bookman\",Georgia,\"Times New Roman\",serif; font-weight: normal; }" +
-  "" +
-  "@media print {" +
-  "  html { font-size: 11pt; }" +
-  "}" +
-  "");
-
-define("text/support/cockpit/lib/cockpit/ui/cli_view.css", [], "" +
-  "#cockpitInput { padding-left: 16px; }" +
-  "" +
-  ".cptOutput { overflow: auto; position: absolute; z-index: 999; display: none; }" +
-  "" +
-  ".cptCompletion { padding: 0; position: absolute; z-index: -1000; }" +
-  ".cptCompletion.VALID { background: #FFF; }" +
-  ".cptCompletion.INCOMPLETE { background: #DDD; }" +
-  ".cptCompletion.INVALID { background: #DDD; }" +
-  ".cptCompletion span { color: #FFF; }" +
-  ".cptCompletion span.INCOMPLETE { color: #DDD; border-bottom: 2px dotted #F80; }" +
-  ".cptCompletion span.INVALID { color: #DDD; border-bottom: 2px dotted #F00; }" +
-  "span.cptPrompt { color: #66F; font-weight: bold; }" +
-  "" +
-  "" +
-  ".cptHints {" +
-  "  color: #000;" +
-  "  position: absolute;" +
-  "  border: 1px solid rgba(230, 230, 230, 0.8);" +
-  "  background: rgba(250, 250, 250, 0.8);" +
-  "  -moz-border-radius-topleft: 10px;" +
-  "  -moz-border-radius-topright: 10px;" +
-  "  border-top-left-radius: 10px; border-top-right-radius: 10px;" +
-  "  z-index: 1000;" +
-  "  padding: 8px;" +
-  "  display: none;" +
-  "}" +
-  "" +
-  ".cptFocusPopup { display: block; }" +
-  ".cptFocusPopup.cptNoPopup { display: none; }" +
-  "" +
-  ".cptHints ul { margin: 0; padding: 0 15px; }" +
-  "" +
-  ".cptGt { font-weight: bold; font-size: 120%; }" +
-  "");
-
-define("text/support/cockpit/lib/cockpit/ui/request_view.css", [], "" +
-  ".cptRowIn {" +
-  "  display: box; display: -moz-box; display: -webkit-box;" +
-  "  box-orient: horizontal; -moz-box-orient: horizontal; -webkit-box-orient: horizontal;" +
-  "  box-align: center; -moz-box-align: center; -webkit-box-align: center;" +
-  "  color: #333;" +
-  "  background-color: #EEE;" +
-  "  width: 100%;" +
-  "  font-family: consolas, courier, monospace;" +
-  "}" +
-  ".cptRowIn > * { padding-left: 2px; padding-right: 2px; }" +
-  ".cptRowIn > img { cursor: pointer; }" +
-  ".cptHover { display: none; }" +
-  ".cptRowIn:hover > .cptHover { display: block; }" +
-  ".cptRowIn:hover > .cptHover.cptHidden { display: none; }" +
-  ".cptOutTyped {" +
-  "  box-flex: 1; -moz-box-flex: 1; -webkit-box-flex: 1;" +
-  "  font-weight: bold; color: #000; font-size: 120%;" +
-  "}" +
-  ".cptRowOutput { padding-left: 10px; line-height: 1.2em; }" +
-  ".cptRowOutput strong," +
-  ".cptRowOutput b," +
-  ".cptRowOutput th," +
-  ".cptRowOutput h1," +
-  ".cptRowOutput h2," +
-  ".cptRowOutput h3 { color: #000; }" +
-  ".cptRowOutput a { font-weight: bold; color: #666; text-decoration: none; }" +
-  ".cptRowOutput a: hover { text-decoration: underline; cursor: pointer; }" +
-  ".cptRowOutput input[type=password]," +
-  ".cptRowOutput input[type=text]," +
-  ".cptRowOutput textarea {" +
-  "  color: #000; font-size: 120%;" +
-  "  background: transparent; padding: 3px;" +
-  "  border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;" +
-  "}" +
-  ".cptRowOutput table," +
-  ".cptRowOutput td," +
-  ".cptRowOutput th { border: 0; padding: 0 2px; }" +
-  ".cptRowOutput .right { text-align: right; }" +
-  "");
 
 define("text/tool/Theme.tmpl.css", [], ".%cssClass% .ace_editor {" +
   "  border: 2px solid rgb(159, 159, 159);" +
@@ -16595,6 +16253,225 @@ define("text/tool/Theme.tmpl.css", [], ".%cssClass% .ace_editor {" +
   "" +
   ".%cssClass% .ace_collab.ace_user1 {" +
   "  %collab.user1%   " +
+  "}");
+
+define("text/node_modules/uglify-js/docstyle.css", [], "html { font-family: \"Lucida Grande\",\"Trebuchet MS\",sans-serif; font-size: 12pt; }" +
+  "body { max-width: 60em; }" +
+  ".title  { text-align: center; }" +
+  ".todo   { color: red; }" +
+  ".done   { color: green; }" +
+  ".tag    { background-color:lightblue; font-weight:normal }" +
+  ".target { }" +
+  ".timestamp { color: grey }" +
+  ".timestamp-kwd { color: CadetBlue }" +
+  "p.verse { margin-left: 3% }" +
+  "pre {" +
+  "  border: 1pt solid #AEBDCC;" +
+  "  background-color: #F3F5F7;" +
+  "  padding: 5pt;" +
+  "  font-family: monospace;" +
+  "  font-size: 90%;" +
+  "  overflow:auto;" +
+  "}" +
+  "pre.src {" +
+  "  background-color: #eee; color: #112; border: 1px solid #000;" +
+  "}" +
+  "table { border-collapse: collapse; }" +
+  "td, th { vertical-align: top; }" +
+  "dt { font-weight: bold; }" +
+  "div.figure { padding: 0.5em; }" +
+  "div.figure p { text-align: center; }" +
+  ".linenr { font-size:smaller }" +
+  ".code-highlighted {background-color:#ffff00;}" +
+  ".org-info-js_info-navigation { border-style:none; }" +
+  "#org-info-js_console-label { font-size:10px; font-weight:bold;" +
+  "  white-space:nowrap; }" +
+  ".org-info-js_search-highlight {background-color:#ffff00; color:#000000;" +
+  "  font-weight:bold; }" +
+  "" +
+  "sup {" +
+  "  vertical-align: baseline;" +
+  "  position: relative;" +
+  "  top: -0.5em;" +
+  "  font-size: 80%;" +
+  "}" +
+  "" +
+  "sup a:link, sup a:visited {" +
+  "  text-decoration: none;" +
+  "  color: #c00;" +
+  "}" +
+  "" +
+  "sup a:before { content: \"[\"; color: #999; }" +
+  "sup a:after { content: \"]\"; color: #999; }" +
+  "" +
+  "h1.title { border-bottom: 4px solid #000; padding-bottom: 5px; margin-bottom: 2em; }" +
+  "" +
+  "#postamble {" +
+  "  color: #777;" +
+  "  font-size: 90%;" +
+  "  padding-top: 1em; padding-bottom: 1em; border-top: 1px solid #999;" +
+  "  margin-top: 2em;" +
+  "  padding-left: 2em;" +
+  "  padding-right: 2em;" +
+  "  text-align: right;" +
+  "}" +
+  "" +
+  "#postamble p { margin: 0; }" +
+  "" +
+  "#footnotes { border-top: 1px solid #000; }" +
+  "" +
+  "h1 { font-size: 200% }" +
+  "h2 { font-size: 175% }" +
+  "h3 { font-size: 150% }" +
+  "h4 { font-size: 125% }" +
+  "" +
+  "h1, h2, h3, h4 { font-family: \"Bookman\",Georgia,\"Times New Roman\",serif; font-weight: normal; }" +
+  "" +
+  "@media print {" +
+  "  html { font-size: 11pt; }" +
+  "}" +
+  "");
+
+define("text/support/cockpit/lib/cockpit/ui/request_view.css", [], "" +
+  ".cptRowIn {" +
+  "  display: box; display: -moz-box; display: -webkit-box;" +
+  "  box-orient: horizontal; -moz-box-orient: horizontal; -webkit-box-orient: horizontal;" +
+  "  box-align: center; -moz-box-align: center; -webkit-box-align: center;" +
+  "  color: #333;" +
+  "  background-color: #EEE;" +
+  "  width: 100%;" +
+  "  font-family: consolas, courier, monospace;" +
+  "}" +
+  ".cptRowIn > * { padding-left: 2px; padding-right: 2px; }" +
+  ".cptRowIn > img { cursor: pointer; }" +
+  ".cptHover { display: none; }" +
+  ".cptRowIn:hover > .cptHover { display: block; }" +
+  ".cptRowIn:hover > .cptHover.cptHidden { display: none; }" +
+  ".cptOutTyped {" +
+  "  box-flex: 1; -moz-box-flex: 1; -webkit-box-flex: 1;" +
+  "  font-weight: bold; color: #000; font-size: 120%;" +
+  "}" +
+  ".cptRowOutput { padding-left: 10px; line-height: 1.2em; }" +
+  ".cptRowOutput strong," +
+  ".cptRowOutput b," +
+  ".cptRowOutput th," +
+  ".cptRowOutput h1," +
+  ".cptRowOutput h2," +
+  ".cptRowOutput h3 { color: #000; }" +
+  ".cptRowOutput a { font-weight: bold; color: #666; text-decoration: none; }" +
+  ".cptRowOutput a: hover { text-decoration: underline; cursor: pointer; }" +
+  ".cptRowOutput input[type=password]," +
+  ".cptRowOutput input[type=text]," +
+  ".cptRowOutput textarea {" +
+  "  color: #000; font-size: 120%;" +
+  "  background: transparent; padding: 3px;" +
+  "  border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;" +
+  "}" +
+  ".cptRowOutput table," +
+  ".cptRowOutput td," +
+  ".cptRowOutput th { border: 0; padding: 0 2px; }" +
+  ".cptRowOutput .right { text-align: right; }" +
+  "");
+
+define("text/support/cockpit/lib/cockpit/ui/cli_view.css", [], "" +
+  "#cockpitInput { padding-left: 16px; }" +
+  "" +
+  ".cptOutput { overflow: auto; position: absolute; z-index: 999; display: none; }" +
+  "" +
+  ".cptCompletion { padding: 0; position: absolute; z-index: -1000; }" +
+  ".cptCompletion.VALID { background: #FFF; }" +
+  ".cptCompletion.INCOMPLETE { background: #DDD; }" +
+  ".cptCompletion.INVALID { background: #DDD; }" +
+  ".cptCompletion span { color: #FFF; }" +
+  ".cptCompletion span.INCOMPLETE { color: #DDD; border-bottom: 2px dotted #F80; }" +
+  ".cptCompletion span.INVALID { color: #DDD; border-bottom: 2px dotted #F00; }" +
+  "span.cptPrompt { color: #66F; font-weight: bold; }" +
+  "" +
+  "" +
+  ".cptHints {" +
+  "  color: #000;" +
+  "  position: absolute;" +
+  "  border: 1px solid rgba(230, 230, 230, 0.8);" +
+  "  background: rgba(250, 250, 250, 0.8);" +
+  "  -moz-border-radius-topleft: 10px;" +
+  "  -moz-border-radius-topright: 10px;" +
+  "  border-top-left-radius: 10px; border-top-right-radius: 10px;" +
+  "  z-index: 1000;" +
+  "  padding: 8px;" +
+  "  display: none;" +
+  "}" +
+  "" +
+  ".cptFocusPopup { display: block; }" +
+  ".cptFocusPopup.cptNoPopup { display: none; }" +
+  "" +
+  ".cptHints ul { margin: 0; padding: 0 15px; }" +
+  "" +
+  ".cptGt { font-weight: bold; font-size: 120%; }" +
+  "");
+
+define("text/demo/styles.css", [], "html {" +
+  "    height: 100%;" +
+  "    width: 100%;" +
+  "    overflow: hidden;" +
+  "}" +
+  "" +
+  "body {" +
+  "    overflow: hidden;" +
+  "    margin: 0;" +
+  "    padding: 0;" +
+  "    height: 100%;" +
+  "    width: 100%;" +
+  "    font-family: Arial, Helvetica, sans-serif, Tahoma, Verdana, sans-serif;" +
+  "    font-size: 12px;" +
+  "    background: rgb(14, 98, 165);" +
+  "    color: white;" +
+  "}" +
+  "" +
+  "#logo {" +
+  "    padding: 15px;" +
+  "    margin-left: 65px;" +
+  "}" +
+  "" +
+  "#editor {" +
+  "    position: absolute;" +
+  "    top:  0px;" +
+  "    left: 280px;" +
+  "    bottom: 0px;" +
+  "    right: 0px;" +
+  "    background: white;" +
+  "}" +
+  "" +
+  "#controls {" +
+  "    padding: 5px;" +
+  "}" +
+  "" +
+  "#controls td {" +
+  "    text-align: right;" +
+  "}" +
+  "" +
+  "#controls td + td {" +
+  "    text-align: left;" +
+  "}" +
+  "" +
+  "#cockpitInput {" +
+  "    position: absolute;" +
+  "    left: 280px;" +
+  "    right: 0px;" +
+  "    bottom: 0;" +
+  "" +
+  "    border: none; outline: none;" +
+  "    font-family: consolas, courier, monospace;" +
+  "    font-size: 120%;" +
+  "}" +
+  "" +
+  "#cockpitOutput {" +
+  "    padding: 10px;" +
+  "    margin: 0 15px;" +
+  "    border: 1px solid #AAA;" +
+  "    -moz-border-radius-topleft: 10px;" +
+  "    -moz-border-radius-topright: 10px;" +
+  "    border-top-left-radius: 4px; border-top-right-radius: 4px;" +
+  "    background: #DDD; color: #000;" +
   "}");
 
 define("text/styles.css", [], "html {" +
