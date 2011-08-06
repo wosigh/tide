@@ -26,8 +26,8 @@ enyo.kind({
 	chrome: [
 		{name: "animator", kind: enyo.Animator, onBegin: "beginAnimation", onAnimate: "stepAnimation", onEnd: "endAnimation", onStop: "stopAnimation"},
 		// FIXME: this node exists so our entire height can encompass the margin used for centering this div
-		{className: "enyo-vslider-progress", name: 'progress', components: [
-			{name: "bar", className: "enyo-vslider-inner", components: [
+		{layoutKind: "VFlexLayout", className: "enyo-vslider-progress", name: 'progress', components: [
+			{name: "bar", flex:1, className: "enyo-vslider-inner", components: [
 				// NOTE: using a toggle so that mouseout doesn't abort down state
 				// manually setting down/up when dragging and on mouseup.
 				{name: "button", kind: "CustomButton", caption: " ", toggle: true, allowDrag: true, className: "enyo-vslider-button"}
@@ -45,41 +45,41 @@ enyo.kind({
 		}
 	},
 	renderPosition: function(inPercent) {
-		this.$.button.applyStyle("left",  inPercent + "%");
+		this.$.button.applyStyle("top",  inPercent + "%");
 	},
 	renderPositionDirect: function(inDomStyle, inPercent) {
-		inDomStyle.left = inPercent + "%";
+		inDomStyle.top = inPercent + "%";
 	},
 	canAnimate: function() {
 		return this.$.button.hasNode();
 	},
 	beginAnimation: function(inSender, inStart, inEnd) {
-		this.$.button.domStyles.left = inEnd + "%";
+		this.$.button.domStyles.top = inEnd + "%";
 		if (this.$.button.hasNode()) {
 			inSender.setNode(this.$.button.node);
 			inSender.style = this.$.button.node.style;
 		}
 		this.doBeginAnimation();
 	},
-	calcWidth: function() {
+	calcHeight: function() {
 		var n = this.$.bar.hasNode();
-		return n.offsetWidth;
+		return n.offsetHeight;
 	},
-	calcEventPosition: function(inX) {
+	calcEventPosition: function(inY) {
 		var o = this.$.bar.getOffset();
-		var x = inX - o.left;
-		return (x / this.calcWidth()) * (this.maximum - this.minimum) + this.minimum;
+		var y = inY - o.top;
+		return (y / this.calcHeight()) * (this.maximum - this.minimum) + this.minimum;
 	},
 	// drag processing
 	dragstartHandler: function(inSender, inEvent) {
 		this.handlingDrag = true;
-		this._width = this.calcWidth();
+		this._height = this.calcHeight();
 		this.$.button.setDown(true);
 		return true;
 	},
 	dragHandler: function(inSender, inEvent) {
 		if (this.handlingDrag) {
-			var p = this.calcEventPosition(inEvent.pageX);
+			var p = this.calcEventPosition(inEvent.pageY);
 			this.dragChange = true;
 			this.setPositionImmediate(p);
 			this.dragChange = false;
@@ -106,7 +106,7 @@ enyo.kind({
 	clickHandler: function(inSender, e) {
 		if (this.tapPosition && (e.dispatchTarget != this.$.button)) {
 			this.$.animator.stop();
-			var p = this.calcEventPosition(e.pageX);
+			var p = this.calcEventPosition(e.pageY);
 			this._clicked = true;
 			this.setPosition(p);
 			if (!this.animatePosition) {

@@ -23,6 +23,7 @@
 
 .enyo-vslider-progress {
 	width: 10px;
+	height: 100%;
 	border-width: 4px 0px;
 	-webkit-border-image: url(../images/vslider-track.png) 4 0 4 0 repeat repeat;
 	margin: 0px 9px;
