@@ -23,6 +23,7 @@
   CHANGELOG:
             *   v0.0.21 - Fix spinner issue for file dialog with no files
                         - Add cut/copy/paste menu buttons (keybindings to come)
+                        - Call sliderChange on onChange (for vslider)
 
             *   v0.0.20 - Add pref to set default path for file dialogs
 
