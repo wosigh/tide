@@ -6,6 +6,8 @@ enyo.kind({
 	modal: true,
 	autoClose: false,
 	dismissWithClick: false,
+	width: "640px",
+	align: 'center',
 		
 	published: {
 		prefs: null
@@ -23,8 +25,8 @@ enyo.kind({
 			components: [
 				{kind: "RadioGroup", name: "myGroup", onclick: "myGroupClick", value: 'appearance',
 		      		components: [
-		          		{caption: "Appearance", value: "appearance"},
-		          		//{caption: "KeyBindings", value: "keybindings"},
+		          		{caption: "Appearance", value: "appearance", width: '120px'},
+		          		{caption: "Paths", value: "paths", width: '100px'},
 					]
 		  		}
 			]
@@ -34,9 +36,22 @@ enyo.kind({
 			pack: "center",
 			className: "enyo-modaldialog-container",
 			style: 'padding: 8px;',
+			name: 'paths',
+			components: [
+				{kind: "Group", caption: "Default Path", flex: 1, components: [
+          			{kind: "Input", name: 'defaultPath', alwaysLooksFocused: true, flex: 1}
+      			]}
+			]
+		},
+		{
+			layoutKind: "HFlexLayout",
+			pack: "center",
+			className: "enyo-modaldialog-container",
+			style: 'padding: 8px;',
+			name: 'appearance',
 			components: [
 				{
-					kind: "RowGroup", width: "250px", components: [
+					kind: "RowGroup", flex: 1, components: [
 		      			{kind: "HFlexBox", align: "center", height: "32px", components: [
 		      				{content: "Theme", flex: 1},
 		      				{
@@ -93,7 +108,7 @@ enyo.kind({
 		  			]
 				},
 				{
-					kind: "RowGroup", width: "250px", components: [
+					kind: "RowGroup", flex: 1, components: [
 		      			{kind: "HFlexBox", align: "center", height: "32px", components: [
 		          			{content: "Show Invisibles", flex: 1},
 		          			{kind: "CheckBox", name: 'showInvisibles'}
@@ -118,6 +133,7 @@ enyo.kind({
 				}
 			]
 		},
+		{flex:1},
   		{
   			layoutKind: "HFlexLayout",
   			pack: "center",
@@ -134,7 +150,20 @@ enyo.kind({
 		}
 	],
 	
+	myGroupClick: function(inSender, inEvent) {
+		var grp = inSender.getValue()
+		if (grp == 'appearance') {
+			this.$.appearance.setShowing(true)
+			this.$.paths.setShowing(false)
+		} else if (grp == 'paths') {
+			this.$.paths.setShowing(true)
+			this.$.appearance.setShowing(false)
+		}
+	},
+	
 	rendered: function() {
+		this.$.myGroup.setValue('appearance')
+		this.$.paths.setShowing(false)
 		this.$.themePicker.setValue(this.prefs.get('theme'))
 		this.$.fontSizePicker.setValue(this.prefs.get('fontSize'))
 		this.$.tabSizePicker.setValue(this.prefs.get('tabSize'))
@@ -144,6 +173,7 @@ enyo.kind({
 		this.$.useWordWrap.setChecked(this.prefs.get('useWordWrap'))
 		this.$.highlightActiveLine.setChecked(this.prefs.get('highlightActiveLine'))
 		this.$.showGutter.setChecked(this.prefs.get('showGutter'))
+		this.$.defaultPath.setValue(this.prefs.get('defaultPath'))
 	},
 	
 	closePrefs: function(inSender, inEvent) {
@@ -156,6 +186,7 @@ enyo.kind({
 		this.prefs.set('useWordWrap', this.$.useWordWrap.checked)
 		this.prefs.set('highlightActiveLine', this.$.highlightActiveLine.checked)
 		this.prefs.set('showGutter', this.$.showGutter.checked)
+		this.prefs.set('defaultPath',this.$.defaultPath.value)
 		this.doClose()
 		this.close()
 	},

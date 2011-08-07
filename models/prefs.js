@@ -6,6 +6,7 @@ function Prefs() {
 		mode: 'python',
 		fontSize: '12px',
 		tabSize: '4',
+		defaultPath: '/media/internal',
 		useSoftTabs: true,
 		showInvisibles: true,//
 		showPrintMargin: true,

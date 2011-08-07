@@ -57,7 +57,7 @@ enyo.kind({
 						}
 					]
 				},
-				{content: '/media/internal', name: 'path', style: 'font-size: 70%; margin: 8px 0px;'},
+				{name: 'path', style: 'font-size: 70%; margin: 8px 0px;'},
 				{
 					layoutKind: "HFlexLayout",
 					width: '100%',
@@ -252,7 +252,7 @@ enyo.kind({
 			this.$.filename.setValue(file.substring(file.lastIndexOf('/')+1))
 			this.$.action.setDisabled(false)
 		} else {
-			this.$.path.setContent('/media/internal')
+			this.$.path.setContent(this.prefs.get('defaultPath'))
 			this.$.filename.setValue('')
 			this.$.action.setDisabled(true)
 		}	

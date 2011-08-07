@@ -198,7 +198,7 @@ enyo.kind({
   	},
   	
   	resizeListener: function() {
-  		this.$.slider.$.progress.applyStyle('height', (window.innerHeight-89)+'px')
+  		this.$.slider.$.progress.applyStyle('height', (window.innerHeight-82)+'px')
   		this.$.editor.refresh(
   			(window.innerWidth-28)+'px',
   			(window.innerHeight-54)+'px',
