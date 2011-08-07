@@ -4,6 +4,8 @@ enyo.kind({
   	kind: enyo.Control,
   	
 	editor: null,
+	
+	clipboard: '',
   	
   	components: [
   		{kind: enyo.Control, allowHtml: true, name: 'editor'}
@@ -131,15 +133,16 @@ enyo.kind({
 	},
 	
 	cut: function() {
-		this.warn('cut')
+		this.clipboard = this.editor.getCopyText()
+		this.editor.onCut()
 	},
 	
 	copy: function() {
-		this.warn('copy')
+		this.clipboard = this.editor.getCopyText()
 	},
 	
 	paste: function() {
-		this.warn('paste')
+		this.editor.onTextInput(this.clipboard, false)
 	}
 	
 })
