@@ -12,7 +12,7 @@
 | '--------------' || '--------------' || '--------------' || '--------------' |
  '----------------'  '----------------'  '----------------'  '----------------' 
 
-=================================== v0.0.21 ====================================
+=================================== v0.0.22 ====================================
 
        TODO:
             * Dropbox / Box.net support
@@ -21,6 +21,8 @@
 			* Printing support
 
   CHANGELOG:
+            *   v0.0.22 - Smaller toolbar
+
             *   v0.0.21 - Fix spinner issue for file dialog with no files
                         - Add cut/copy/paste menu buttons (keybindings to come)
                         - VSlider fixes/enhancements

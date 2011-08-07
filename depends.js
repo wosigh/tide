@@ -46,6 +46,7 @@ enyo.depends(
 	"css/main.css",
 	"css/vslider.css",
 	
+	"enyo/TideToolButton.js",	
 	"enyo/popup.js",
 	"enyo/prefs.js",
 	"enyo/list.js",

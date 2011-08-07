@@ -8,3 +8,55 @@
 }
 .dirlistIcon.folder {background-position: 0px 0px;}
 .dirlistIcon.file {background-position: 0px -24px;}
+
+.tide-toolbar-light {
+	position: relative;
+	min-height: 32px;
+	-webkit-box-sizing: border-box;
+	-webkit-border-image: url(../images/toolbar-light.png) 1 4 repeat stretch;
+	border-width: 1px 4px;
+	background-color: #a9a9a9;
+}
+
+.tide-tool-button {
+	cursor: pointer;
+	padding: 5px;
+}
+
+.tide-tool-button-client {
+	font-size: 16px;
+	line-height: 20px;
+	text-align: center;
+	cursor: pointer;
+	border-width: 4px;
+	border-radius: 5px;
+	border-style: solid;
+	border-color: transparent;
+	min-width: 14px;
+	min-height: 20px;
+	/*margin: 3px;*/
+	color: #f2f2f2;
+}
+
+.tide-tool-button-client .tide-button-icon {
+	/*margin: -2px -2px -6px;*/
+}
+
+.tide-tool-button-client.tide-tool-button-captioned {
+	padding: 4px 8px;
+	border-style: none;
+	-webkit-border-image: url(../images/button-toolbar.png) 4 4 4 4 stretch stretch;
+}
+
+
+.tide-tool-button-client.tide-tool-button-captioned.tide-button-down, .tide-tool-button-client.tide-button-depressed {
+	-webkit-border-image: url(../images/button-down.png) 4 4 4 4 stretch stretch;
+}
+
+.tide-tool-button-client.tide-button-depressed {
+	/*background-color: #2071bb;*/
+}
+
+.tide-tool-button-client.tide-button-disabled {
+	opacity: 0.4;
+}

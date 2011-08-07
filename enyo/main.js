@@ -14,23 +14,26 @@ enyo.kind({
 	      service: 'palm://us.ryanhope.tide.fileio/', method: 'writefile',
 	      onResponse: 'writefile' },
 		{
-			kind: 'Toolbar',
+			kind: 'HFlexBox',
 			name: 'toolbar',
 			showing: true,
-			className: 'enyo-toolbar-light',
+			align: 'center',
+			className: 'tide-toolbar-light',
+			//style: 'min-height: 48px',
 			components: [
-				{icon: 'images/cog.png', onclick: "preferences"},
-				{width: '16px'},
-				{icon: 'images/new.png', onclick: "newDoc"},
-				{icon: 'images/open.png', onclick: "openDialog"},
-				{icon: 'images/save.png', onclick: "saveDialog"},
-				{width: '16px'},
-				{icon: 'images/cut.png', onclick: "cut"},
-				{icon: 'images/copy.png', onclick: "copy"},
-				{icon: 'images/paste.png', onclick: "paste"},
-				{width: '16px'},
-	      		{icon: 'images/undo.png', onclick: 'undo'},
-	      		{icon: 'images/redo.png', onclick: 'redo'},
+				{width: '5px'},
+				{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/cog.png', onclick: "preferences"},
+				{width: '20px'},
+				{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/new.png', onclick: "newDoc"},
+				{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/open.png', onclick: "openDialog"},
+				{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/save.png', onclick: "saveDialog"},
+				{width: '20px'},
+				{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/cut.png', onclick: "cut"},
+				{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/copy.png', onclick: "copy"},
+				{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/paste.png', onclick: "paste"},
+				{width: '20px'},
+	      		{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/undo.png', onclick: 'undo'},
+	      		{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/redo.png', onclick: 'redo'},
 	      		//{width: '16px'},
 	      		//{icon: 'images/search.png', onclick: 'toggleSearch'},
 				{flex:1},
@@ -63,7 +66,8 @@ enyo.kind({
 			  			{caption: 'XML', value: 'xml'}
 			  		],
 			  		onChange: "changeMode"
-				}
+				},
+				{width: '5px'}
 			]
 		},
 		{kind: enyo.HFlexBox, components: [
@@ -202,10 +206,10 @@ enyo.kind({
   	},
   	
   	resizeListener: function() {
-  		this.$.slider.$.progress.applyStyle('height', (window.innerHeight-82)+'px')
+  		this.$.slider.$.progress.applyStyle('height', (window.innerHeight-68)+'px')
   		this.$.editor.refresh(
   			(window.innerWidth-28)+'px',
-  			(window.innerHeight-54)+'px',
+  			(window.innerHeight-40)+'px',
   			this.prefs.get('fontSize')
 		)
   		this.$.editor.resizeRenderer()
