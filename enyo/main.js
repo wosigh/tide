@@ -71,7 +71,7 @@ enyo.kind({
 				kind: 'Editah.Editor', name: 'editor', flex: 1
 			},
 			{
-				kind: 'VSlider', name: 'slider', width: '28px', onChanging: 'sliderChange'
+				kind: 'VSlider', name: 'slider', width: '28px', onChanging: 'sliderChange', onChange: 'sliderChange'
 			}
 		]},
 		{
