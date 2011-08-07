@@ -2,7 +2,7 @@
   "id": "us.ryanhope.tide",
   "package_format_version": 2,
   "loc_name": "Tide",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "icon": "icon.png",
   "app": "us.ryanhope.tide",
   "services": ["us.ryanhope.tide.fileio"]

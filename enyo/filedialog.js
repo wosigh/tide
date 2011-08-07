@@ -156,14 +156,21 @@ enyo.kind({
 	
   	readdir: function(inSender, inResponse, inRequest) {
 		if (inResponse.returnValue) {
-	  		this.dataSize = inResponse.files.length
-	  		var base = '/'
-	  		if (this.$.path.getContent() != '/')
-	  			base = this.$.path.getContent() + '/'
-	  		for (i in inResponse.files)
-				this.$.stat.call({ 'path': base + inResponse.files[i] })
+			this.dataSize = inResponse.files.length
+			if (this.dataSize > 0) {
+		  		var base = '/'
+		  		if (this.$.path.getContent() != '/')
+		  			base = this.$.path.getContent() + '/'
+		  		for (i in inResponse.files)
+					this.$.stat.call({ 'path': base + inResponse.files[i] })
 			} else {
-				this.error(inResponse)
+	  			this.$.dirlist.setShowing(true)
+	  			this.$.fdSpinner.setShowing(false)
+				this.$.dirlist.refresh()
+				this.resizeListener()
+			}
+		} else {
+			this.error(inResponse)
 		}
   	},
   	
