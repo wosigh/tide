@@ -128,6 +128,18 @@ enyo.kind({
 	
 	redo: function() {
 		this.editor.redo()
+	},
+	
+	cut: function() {
+		this.warn('cut')
+	},
+	
+	copy: function() {
+		this.warn('copy')
+	},
+	
+	paste: function() {
+		this.warn('paste')
 	}
 	
 })

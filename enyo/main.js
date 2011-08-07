@@ -25,6 +25,10 @@ enyo.kind({
 				{icon: 'images/open.png', onclick: "openDialog"},
 				{icon: 'images/save.png', onclick: "saveDialog"},
 				{width: '16px'},
+				{icon: 'images/cut.png', onclick: "cut"},
+				{icon: 'images/copy.png', onclick: "copy"},
+				{icon: 'images/paste.png', onclick: "paste"},
+				{width: '16px'},
 	      		{icon: 'images/undo.png', onclick: 'undo'},
 	      		{icon: 'images/redo.png', onclick: 'redo'},
 	      		//{width: '16px'},
@@ -249,6 +253,19 @@ enyo.kind({
 		this.resizeListener()
 		window.addEventListener('resize', enyo.bind(this, 'resizeListener'), false)
 		this.$.readfile.call({ 'path': 'TIDE.txt' })
-  	}
+  	},
+  	
+	cut: function() {
+		this.$.editor.cut()
+	},
+	
+	copy: function() {
+		this.$.editor.copy()
+	},
+	
+	paste: function() {
+		this.$.editor.paste()
+	}
+	
   	
 })

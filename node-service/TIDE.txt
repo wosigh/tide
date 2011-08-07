@@ -17,12 +17,12 @@
        TODO:
             * Dropbox / Box.net support
 			* Implement mkdir support
-			* Highlight / Cut / Copy / Paste support
 			* Handle multiple files/sessions
 			* Printing support
 
   CHANGELOG:
             *   v0.0.21 - Fix spinner issue for file dialog with no files
+                        - Add cut/copy/paste menu buttons (keybindings to come)
 
             *   v0.0.20 - Add pref to set default path for file dialogs
 
