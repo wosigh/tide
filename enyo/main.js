@@ -7,6 +7,11 @@ enyo.kind({
   	currentFile: '',
   	
   	components: [
+  		{kind: 'Scrim', name: 'mainScrim', showing: true, components:[
+  			{layoutKind: "VFlexLayout", height: '100%', width: '100%', pack: 'center', align: 'center', components: [
+  				{kind: 'SpinnerLarge', showing: true}
+  			]}
+  		]},
   		{ name: 'readfile', kind: 'PalmService',
 	      service: 'palm://us.ryanhope.tide.fileio/', method: 'readfile',
 	      onResponse: 'readfile' },
@@ -247,6 +252,7 @@ enyo.kind({
   		this.currentFile = inResponse.path
   		this.setModeByExtension(inResponse.path)
   		this.$.editor.setValue(inResponse.content)
+  		this.$.mainScrim.setShowing(false)
   	},
   	
   	rendered: function() {
