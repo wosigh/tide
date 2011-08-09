@@ -230,7 +230,7 @@ enyo.kind({
   		this.$.editor.useWordWrap(this.prefs.get('useWordWrap'))
   		this.$.editor.useSoftTabs(this.prefs.get('useSoftTabs'))
   		this.$.editor.showGutter(this.prefs.get('showGutter'))
-  		
+  		this.$.editor.setEditorFont()
   		this.$.editor.setMode(this.prefs.get('mode'))
 		this.$.modePicker.setValue(this.prefs.get('mode'))
   	},
@@ -260,6 +260,7 @@ enyo.kind({
   	
   	rendered: function() {
 		this.inherited(arguments)
+		this.$.editor.prefs = this.prefs
 		enyo.setFullScreen(true)
 		enyo.keyboard.setResizesWindow(true)
 		this.refresh()

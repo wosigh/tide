@@ -39,7 +39,7 @@ enyo.kind({
 			name: 'paths',
 			components: [
 				{kind: "Group", caption: "Default Path", flex: 1, components: [
-          			{kind: "Input", name: 'defaultPath', alwaysLooksFocused: true, flex: 1}
+          			{kind: "Input", name: 'defaultPath', alwaysLooksFocused: true, flex: 1},
       			]}
 			]
 		},
@@ -75,8 +75,7 @@ enyo.kind({
 									{caption: 'TextMate', value: 'textmate'},
 									{caption: 'Twilight', value: 'twilight'},
 									{caption: 'Vibrant Ink', value: 'vibrant_ink'}
-						  		],
-						  		onChange: "changeTheme"
+						  		]
 							}
 		      			]},
 		      			{kind: "HFlexBox", align: "center", height: "32px", components: [
@@ -103,8 +102,21 @@ enyo.kind({
 		          			{content: "Soft Tabs", flex: 1},
 		          			{kind: "CheckBox", name: 'useSoftTabs'}
 		      			]},
-		      			{flex:1}
-		      			
+		      			{kind: "HFlexBox", align: "center", height: "32px", components: [
+		      				{content: "Theme", flex: 1},
+			      			{
+						  		kind: "ListSelector",
+						  		name: 'editorFont',
+						  		value: '"Lucida Console"',
+						  		items: [
+						  			{caption: 'Lucida Console', value: '"Lucida Console"'},
+									{caption: 'Monaco', value: 'Monaco'},
+									{caption: 'Menlo', value: '"Menlo"'},
+									{caption: 'Courier New', value: '"Courier New"'},
+									{caption: 'monospace', value: 'monospace'},
+						  		]
+							}
+						]}
 		  			]
 				},
 				{
@@ -174,6 +186,7 @@ enyo.kind({
 		this.$.highlightActiveLine.setChecked(this.prefs.get('highlightActiveLine'))
 		this.$.showGutter.setChecked(this.prefs.get('showGutter'))
 		this.$.defaultPath.setValue(this.prefs.get('defaultPath'))
+		this.$.editorFont.setValue(this.prefs.get('editorFont'))
 	},
 	
 	closePrefs: function(inSender, inEvent) {
@@ -187,6 +200,7 @@ enyo.kind({
 		this.prefs.set('highlightActiveLine', this.$.highlightActiveLine.checked)
 		this.prefs.set('showGutter', this.$.showGutter.checked)
 		this.prefs.set('defaultPath',this.$.defaultPath.value)
+		this.prefs.set('editorFont',this.$.editorFont.value)
 		this.doClose()
 		this.close()
 	},

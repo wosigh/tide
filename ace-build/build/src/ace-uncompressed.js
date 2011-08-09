@@ -13380,6 +13380,10 @@ var VirtualRenderer = function(container, theme) {
         this.showGutter = show;
         this.onResize(true);
     };
+    
+    this.setFontFamily = function(fontFamily){
+    	this.container.style.fontFamily = fontFamily;
+    };
 
     this.$updatePrintMargin = function() {
         var containerEl;

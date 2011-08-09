@@ -13,6 +13,7 @@ function Prefs() {
 		useWordWrap: true,
 		highlightActiveLine: true,
 		showGutter: true,
+		editorFont: '"Lucida Console"'
 		
 	}
 	

@@ -6,6 +6,10 @@ enyo.kind({
 	editor: null,
 	
 	clipboard: '',
+	
+	published: {
+		prefs: null
+	},
   	
   	components: [
   		{kind: enyo.Control, allowHtml: true, name: 'editor'}
@@ -116,12 +120,17 @@ enyo.kind({
 		this.editor.resize()
 	},
 	
+	setEditorFont: function() {
+		this.editor.renderer.setFontFamily(this.prefs.get('editorFont'))
+	},
+	
 	refresh: function(width,height,fontSize) {
 		this.$.editor.applyStyle('width',width)
 		this.$.editor.applyStyle('height',height)
 		this.setFontSize(fontSize)
 		if (enyo.keyboard.isShowing())
 			this.editor.centerSelection()
+		this.setEditorFont()
 	},
 	
 	undo: function() {
