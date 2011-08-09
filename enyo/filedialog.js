@@ -256,7 +256,10 @@ enyo.kind({
 		this.type = type
 		if (file.length > 0 && file[0] == '/') {
 			this.$.path.setContent(file.substring(0,file.lastIndexOf('/')))
-			this.$.filename.setValue(file.substring(file.lastIndexOf('/')+1))
+			if (this.type == 'save')
+				this.$.filename.setValue(file.substring(file.lastIndexOf('/')+1))
+			else
+				this.$.filename.setValue('')
 			this.$.action.setDisabled(false)
 		} else {
 			this.$.path.setContent(this.prefs.get('defaultPath'))

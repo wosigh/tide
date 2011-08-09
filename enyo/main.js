@@ -166,7 +166,7 @@ enyo.kind({
   	},
   	
   	openDialog: function() {
-  		this.$.filedialog.display('open','')
+  		this.$.filedialog.display('open',this.currentFile)
   	},
   	
   	saveDialog: function() {
@@ -236,16 +236,19 @@ enyo.kind({
   	},
   	
   	handleSave: function(inSender, file) {
+  		this.$.mainScrim.setShowing(true)
   		this.$.writefile.call({ 'path': file, 'content': this.$.editor.getValue()})
   	},
   	
   	handleOpen: function(inSender, file) {
+  		this.$.mainScrim.setShowing(true)
 		this.$.readfile.call({ 'path': file })
 		this.resizeListener()
   	},
   	
   	writefile: function(inSender, inResponse, inRequest) {
   		this.warn(inResponse)
+  		this.$.mainScrim.setShowing(false)
   	},
   	
   	readfile: function(inSender, inResponse, inRequest) {

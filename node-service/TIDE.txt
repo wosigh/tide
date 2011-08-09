@@ -12,15 +12,19 @@
 | '--------------' || '--------------' || '--------------' || '--------------' |
  '----------------'  '----------------'  '----------------'  '----------------' 
 
-=================================== v0.0.22 ====================================
+=================================== v0.0.23 ====================================
 
        TODO:
+            * Open files with spaces in the path
             * Dropbox / Box.net support
 			* Implement mkdir support
 			* Handle multiple files/sessions
 			* Printing support
 
   CHANGELOG:
+            *   v0.0.23 - Spinner+scrim when opening/saving files
+                        - File dialog starts in path of last opened file
+
             *   v0.0.22 - Smaller toolbar
 
             *   v0.0.21 - Fix spinner issue for file dialog with no files
