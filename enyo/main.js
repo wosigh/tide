@@ -30,18 +30,18 @@ enyo.kind({
 			//style: 'min-height: 48px',
 			components: [
 				{width: '5px'},
-				{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/cog.png', onclick: "preferences"},
+				{kind: "TideToolButton", icon: 'images/cog.png', onclick: "preferences"},
 				{width: '20px'},
-				{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/new.png', onclick: "newDoc"},
-				{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/open.png', onclick: "openDialog"},
-				{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/save.png', onclick: "saveDialog"},
+				{kind: "TideToolButton", icon: 'images/new.png', onclick: "newDoc"},
+				{kind: "TideToolButton", icon: 'images/open.png', onclick: "openDialog"},
+				{kind: "TideToolButton", icon: 'images/save.png', onclick: "saveDialog"},
 				{width: '20px'},
-				{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/cut.png', onclick: "cut"},
-				{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/copy.png', onclick: "copy"},
-				{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/paste.png', onclick: "paste"},
+				{kind: "TideToolButton", icon: 'images/cut.png', onclick: "cut"},
+				{kind: "TideToolButton", icon: 'images/copy.png', onclick: "copy"},
+				{kind: "TideToolButton", icon: 'images/paste.png', onclick: "paste"},
 				{width: '20px'},
-	      		{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/undo.png', onclick: 'undo'},
-	      		{kind: "TideToolButton", className: 'tide-tool-button', icon: 'images/redo.png', onclick: 'redo'},
+	      		{kind: "TideToolButton", icon: 'images/undo.png', onclick: 'undo'},
+	      		{kind: "TideToolButton", icon: 'images/redo.png', onclick: 'redo'},
 	      		//{width: '16px'},
 	      		//{icon: 'images/search.png', onclick: 'toggleSearch'},
 				{flex:1},
@@ -83,7 +83,11 @@ enyo.kind({
 				kind: 'Editah.Editor', name: 'editor', flex: 1
 			},
 			{
-				kind: 'VSlider', name: 'slider', width: '28px', onChanging: 'sliderChange', onChange: 'sliderChange'
+				layoutKind: 'VFlexLayout', align: 'end', components: [
+					{kind: "TideToolButton", style: 'margin-right: -4px;', icon: 'images/arrow_up.png', onclick: "pgUp"},
+					{kind: 'VSlider', name: 'slider', width: '28px', onChanging: 'sliderChange', onChange: 'sliderChange'},
+					{kind: "TideToolButton", style: 'margin-right: -4px;', icon: 'images/arrow_down.png', onclick: "pgDown"},
+				]
 			}
 		]},
 		{
@@ -214,7 +218,7 @@ enyo.kind({
   	},
   	
   	resizeListener: function() {
-  		this.$.slider.$.progress.applyStyle('height', (window.innerHeight-68)+'px')
+  		this.$.slider.$.progress.applyStyle('height', (window.innerHeight-148)+'px')
   		this.$.editor.refresh(
   			(window.innerWidth-28)+'px',
   			(window.innerHeight-40)+'px',
@@ -300,7 +304,14 @@ enyo.kind({
 	
 	paste: function() {
 		this.$.editor.paste()
-	}
+	},
 	
-  	
+	pgDown: function() {
+		this.$.editor.pgDown()
+	},
+	
+	pgUp: function() {
+		this.$.editor.pgUp()
+	},
+	
 })

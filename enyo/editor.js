@@ -152,6 +152,14 @@ enyo.kind({
 	
 	paste: function() {
 		this.editor.onTextInput(this.clipboard, false)
+	},
+	
+	pgDown: function() {
+		this.editor.scrollPageDown()
+	},
+	
+	pgUp: function() {
+		this.editor.scrollPageUp()
 	}
 	
 })
