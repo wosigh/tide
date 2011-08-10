@@ -109,7 +109,7 @@ enyo.kind({
 		          			{kind: "CheckBox", name: 'useSoftTabs'}
 		      			]},
 		      			{kind: "HFlexBox", align: "center", height: "32px", components: [
-		      				{content: "Theme", flex: 1},
+		      				{content: "Font", flex: 1},
 			      			{
 						  		kind: "ListSelector",
 						  		name: 'editorFont',
