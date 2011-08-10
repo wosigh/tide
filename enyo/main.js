@@ -18,6 +18,9 @@ enyo.kind({
       	{ name: 'writefile', kind: 'PalmService',
 	      service: 'palm://us.ryanhope.tide.fileio/', method: 'writefile',
 	      onResponse: 'writefile' },
+	    { name: 'checkfonts', kind: 'PalmService',
+	      service: 'palm://us.ryanhope.tide.fileio/', method: 'readdir',
+	      onResponse: 'fontschecked' },
 		{
 			kind: 'HFlexBox',
 			name: 'toolbar',
@@ -258,6 +261,23 @@ enyo.kind({
   		this.$.mainScrim.setShowing(false)
   	},
   	
+  	fontschecked: function(inSender, inResponse, inRequest) {
+  		if (inResponse.returnValue) {
+  			for (i in inResponse.files) {
+				if (inResponse.files[i] == 'DroidSansMono.ttf')
+					this.$.preferences.hasDroid = true
+				else if (inResponse.files[i] == 'DejaVuSansMono.ttf')
+					this.$.preferences.hasDejaVu = true
+				else if (inResponse.files[i] == 'VeraMono.ttf')
+					this.$.preferences.hasBitstream = true
+				else if (inResponse.files[i] == 'LiberationMono-Regular.ttf')
+					this.$.preferences.hasLiberation = true
+  			}
+		} else {
+			this.error(inResponse)
+		}
+  	},
+  	
   	rendered: function() {
 		this.inherited(arguments)
 		this.$.editor.prefs = this.prefs
@@ -266,6 +286,7 @@ enyo.kind({
 		this.refresh()
 		this.resizeListener()
 		window.addEventListener('resize', enyo.bind(this, 'resizeListener'), false)
+		this.$.checkfonts.call({ 'path': '/usr/share/fonts' })
 		this.$.readfile.call({ 'path': 'TIDE.txt' })
   	},
   	

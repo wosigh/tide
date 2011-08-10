@@ -6,12 +6,18 @@ enyo.kind({
 	modal: true,
 	autoClose: false,
 	dismissWithClick: false,
-	width: "640px",
+	width: "680px",
 	align: 'center',
 		
 	published: {
-		prefs: null
+		prefs: null,
+		hasBitstream: false,
+		hasDejaVu: false,
+		hasLiberation: false,
+		hasDroid: false
 	},
+	
+	fontsLoaded: false,
 	
 	events: {
 		onClose: ''
@@ -110,10 +116,8 @@ enyo.kind({
 						  		value: '"Lucida Console"',
 						  		items: [
 						  			{caption: 'Lucida Console', value: '"Lucida Console"'},
-									{caption: 'Monaco', value: 'Monaco'},
 									{caption: 'Menlo', value: '"Menlo"'},
-									{caption: 'Courier New', value: '"Courier New"'},
-									{caption: 'monospace', value: 'monospace'},
+									{caption: 'Courier New', value: '"Courier New"'}
 						  		]
 							}
 						]}
@@ -173,7 +177,21 @@ enyo.kind({
 		}
 	},
 	
+	loadFonts: function() {
+		if (this.hasBitstream)
+			this.$.editorFont.items.push({caption: 'Bitstream Vera Sans Mono', value: '"Bitstream Vera Sans Mono"'})
+		if (this.hasDejaVu)
+			this.$.editorFont.items.push({caption: 'DejaVu Sans Mono', value: '"DejaVu Sans Mono"'})
+		if (this.hasLiberation)
+			this.$.editorFont.items.push({caption: 'Liberation Mono', value: '"Liberation Mono"'})
+		if (this.hasDroid)
+			this.$.editorFont.items.push({caption: 'Droid Sans Mono', value: '"Droid Sans Mono"'})
+		this.fontsLoaded = true
+	},
+	
 	rendered: function() {
+		if (!this.fontsLoaded)
+			this.loadFonts()
 		this.$.myGroup.setValue('appearance')
 		this.$.paths.setShowing(false)
 		this.$.themePicker.setValue(this.prefs.get('theme'))

@@ -12,16 +12,19 @@
 | '--------------' || '--------------' || '--------------' || '--------------' |
  '----------------'  '----------------'  '----------------'  '----------------' 
 
-=================================== v0.0.24 ====================================
+=================================== v0.0.25 ====================================
 
        TODO:
             * Open files with spaces in the path
             * Dropbox / Box.net support
-			* Implement mkdir support
-			* Handle multiple files/sessions
-			* Printing support
+            * Implement mkdir support
+            * Handle multiple files/sessions
+            * Printing support
 
   CHANGELOG:
+            *   v0.0.25 - Show Bitstream, DejaVu, Droid and/or Liberation 
+                          mono fonts in prefs if installed
+
             *   v0.0.24 - Add editor font selector in prefs
 
             *   v0.0.23 - Spinner+scrim when opening/saving files
