@@ -7836,6 +7836,33 @@ canon.addCommand({
     bindKey: bindKey("Ctrl-T", "Ctrl-T"),
     exec: function(env, args, request) { env.editor.transposeLetters(); }
 });
+canon.addCommand({
+    name: "cut",
+    bindKey: bindKey("Ctrl-X", "Ctrl-X"),
+    exec: function(env, args, request) {
+    	enyo.dom.setClipboard(env.editor.getCopyText());
+		env.editor.onCut();
+		env.editor.focus();
+    }
+});
+canon.addCommand({
+    name: "copy",
+    bindKey: bindKey("Ctrl-C", "Ctrl-C"),
+    exec: function(env, args, request) {
+    	enyo.dom.setClipboard(env.editor.getCopyText());
+    }
+});
+canon.addCommand({
+    name: "paste",
+    bindKey: bindKey("Ctrl-V", "Ctrl-V"),
+    exec: function(env, args, request) {
+        enyo.dom.getClipboard(function(txt) {
+        	enyo.dom.setClipboard(txt);                                                           
+			env.editor.onTextInput(txt, false);
+			env.editor.focus();
+		})
+    }
+});
 
 });/* vim:ts=4:sts=4:sw=4:
  * ***** BEGIN LICENSE BLOCK *****

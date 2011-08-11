@@ -24,6 +24,10 @@
             * Printing support
 
   CHANGELOG:
+            *   v0.0.26 - Fix improper label in prefs scene
+                        - Use system clipboard
+                        - Cut/Copy/Paste support for BT keyboard
+
             *   v0.0.25 - Show Bitstream, DejaVu, Droid and/or Liberation 
                           mono fonts in prefs if installed
                         - Page Up/Down buttons by vslider

@@ -152,6 +152,7 @@ enyo.kind({
 		var that = this;
         enyo.dom.getClipboard(function(txt) {                                                           
 			that.editor.onTextInput(txt, false)
+			enyo.dom.setClipboard(txt)
 		})
 	},
 	
