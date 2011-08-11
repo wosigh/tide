@@ -5,8 +5,6 @@ enyo.kind({
   	
 	editor: null,
 	
-	clipboard: '',
-	
 	published: {
 		prefs: null
 	},
@@ -142,16 +140,19 @@ enyo.kind({
 	},
 	
 	cut: function() {
-		this.clipboard = this.editor.getCopyText()
+		enyo.dom.setClipboard(this.editor.getCopyText())
 		this.editor.onCut()
 	},
 	
 	copy: function() {
-		this.clipboard = this.editor.getCopyText()
+		enyo.dom.setClipboard(this.editor.getCopyText())
 	},
 	
 	paste: function() {
-		this.editor.onTextInput(this.clipboard, false)
+		var that = this;
+        enyo.dom.getClipboard(function(txt) {                                                           
+			that.editor.onTextInput(txt, false)
+		})
 	},
 	
 	pgDown: function() {
