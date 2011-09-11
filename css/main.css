@@ -18,6 +18,17 @@
 	background-color: #a9a9a9;
 }
 
+.tide-toolbar-light2 {
+	position: relative;
+	min-height: 32px;
+	-webkit-box-sizing: border-box;
+	-webkit-border-image: url(../images/toolbar-light.png) 1 1 repeat stretch;
+	border-width: 1px 1px;
+	background-color: #a9a9a9;
+	margin-top: 4px;
+	bottom: 0;
+}
+
 .tide-tool-button {
 	cursor: pointer;
 	padding: 5px;

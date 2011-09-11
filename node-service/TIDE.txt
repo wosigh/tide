@@ -12,7 +12,7 @@
 | '--------------' || '--------------' || '--------------' || '--------------' |
  '----------------'  '----------------'  '----------------'  '----------------' 
 
-=================================== v0.0.26 ====================================
+=================================== v0.0.27 ====================================
 
        TODO:
             * Pressing buttons should not auto-hide keyboard
@@ -24,6 +24,9 @@
             * Printing support
 
   CHANGELOG:
+            *   v0.0.27 - New icons
+                        - Seach feature
+  
             *   v0.0.26 - Fix improper label in prefs scene
                         - Use system clipboard
                         - Cut/Copy/Paste support for BT keyboard

@@ -162,6 +162,26 @@ enyo.kind({
 	
 	pgUp: function() {
 		this.editor.scrollPageUp()
+	},
+	
+	find: function(term, options) {
+		this.editor.find(term, options)
+	},
+	
+	findNext: function() {
+		this.editor.findNext()
+	},
+	
+	findPrevious: function() {
+		this.editor.findPrevious()
+	},
+	
+	replace: function(term) {
+		this.editor.replace(term)
+	},
+	
+	replaceAll: function(term) {
+		this.editor.replaceAll(term)
 	}
 	
 })

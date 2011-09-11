@@ -5,6 +5,8 @@ enyo.kind({
   	
   	prefs: new Prefs(),
   	currentFile: '',
+  	currentSearchTerm: null,
+  	currentSearchOptions: null,
   	
   	components: [
   		{kind: 'Scrim', name: 'mainScrim', showing: true, components:[
@@ -12,6 +14,116 @@ enyo.kind({
   				{kind: 'SpinnerLarge', showing: true}
   			]}
   		]},
+  		{
+			kind: 'Popup2',
+			name: 'search', 
+			scrim: false,
+			modal: false,
+			autoClose: true,
+			dismissWithClick: false,
+			width: "540px",
+			components: [
+				{
+					layoutKind: "HFlexLayout",
+					pack: "center",
+					style: 'padding: 8px;',
+					components: [
+						{
+							components: [
+								{kind: "Group", caption: "Search for:", components: [
+									{
+										kind: 'Input',
+										name: 'searchText', 
+										style: 'min-width: 300px;', 
+										spellcheck: false, 
+										autocorrect: false,
+										autoCapitalize: 'lowercase',
+										changeOnInput: true,
+										alwaysLooksFocused: true,
+										hint: $L(''),
+										onchange: 'stChange'
+									},
+								]},
+								{kind: "Group", caption: "Replace with:", components: [
+									{
+										kind: 'Input',
+										name: 'replaceText',
+										style: 'min-width: 300px;',
+										spellcheck: false, 
+										autocorrect: false,
+										autoCapitalize: 'lowercase',
+										changeOnInput: true,
+										alwaysLooksFocused: true,
+										hint: $L(''),
+										onchange: 'stChange'
+									},
+								]}
+							]
+						},
+						{
+							flex: 1, layoutKind: "VFlexLayout", align: "end", components: [
+								{kind: "HFlexBox", align: "center", components: [
+									{content: 'Wrap'},
+									{kind: "CheckBox", name: 'searchWrap', style: 'margin-left: 8px', checked: true},
+								]},
+								{kind: "HFlexBox", align: "center", components: [
+									{content: 'Backwards'},
+									{kind: "CheckBox", name: 'searchBackwards', style: 'margin-left: 8px'},
+								]},
+								{kind: "HFlexBox", align: "center", components: [
+									{content: 'Case Sensitive', style: 'padding-right: 4px'},
+									{kind: "CheckBox", name: 'searchCaseSensitive', style: 'margin-left: 8px'},
+								]},
+								{kind: "HFlexBox", align: "center", components: [
+									{content: 'Whole Word'},
+									{kind: "CheckBox", name: 'searchWholeWord', style: 'margin-left: 8px'},
+								]},
+								{kind: "HFlexBox", align: "center", components: [
+									{content: 'RegExp'},
+									{kind: "CheckBox", name: 'searchRegExp', style: 'margin-left: 8px'},
+								]}
+							]
+						},
+					]
+				},
+				{
+					layoutKind: "HFlexLayout",
+					pack: "center",
+					components: [
+						{
+							kind: "Button",
+							caption: "Close",
+							flex: 1,
+							onclick: "closeSearch"
+						},
+						{
+							kind: "Button",
+							caption: "Search",
+							disabled: true,
+							flex: 1,
+							name: 'searchButton',
+							onclick: "search"
+						},
+						{
+							kind: "Button",
+							caption: "Replace",
+							disabled: true,
+							flex: 1,
+							name: 'replaceButton',
+							onclick: "replace"
+						},
+						{
+							kind: "Button",
+							caption: "Replace All",
+							disabled: true,
+							flex: 1,
+							name: 'replaceAllButton',
+							onclick: "replaceAll"
+						},
+					]
+				}		
+			]
+		},
   		{ name: 'readfile', kind: 'PalmService',
 	      service: 'palm://us.ryanhope.tide.fileio/', method: 'readfile',
 	      onResponse: 'readfile' },
@@ -30,20 +142,20 @@ enyo.kind({
 			//style: 'min-height: 48px',
 			components: [
 				{width: '5px'},
-				{kind: "TideToolButton", icon: 'images/cog.png', onclick: "preferences"},
+				{kind: "TideToolButton", icon: 'images/new/prefs.png', onclick: "preferences"},
 				{width: '20px'},
-				{kind: "TideToolButton", icon: 'images/new.png', onclick: "newDoc"},
-				{kind: "TideToolButton", icon: 'images/open.png', onclick: "openDialog"},
-				{kind: "TideToolButton", icon: 'images/save.png', onclick: "saveDialog"},
+				{kind: "TideToolButton", icon: 'images/new/new_doc.png', onclick: "newDoc"},
+				{kind: "TideToolButton", icon: 'images/new/open.png', onclick: "openDialog"},
+				{kind: "TideToolButton", icon: 'images/new/save.png', onclick: "saveDialog"},
 				{width: '20px'},
-				{kind: "TideToolButton", icon: 'images/cut.png', onclick: "cut"},
-				{kind: "TideToolButton", icon: 'images/copy.png', onclick: "copy"},
-				{kind: "TideToolButton", icon: 'images/paste.png', onclick: "paste"},
+				{kind: "TideToolButton", icon: 'images/new/cut.png', onclick: "cut"},
+				{kind: "TideToolButton", icon: 'images/new/copy.png', onclick: "copy"},
+				{kind: "TideToolButton", icon: 'images/new/paste.png', onclick: "paste"},
 				{width: '20px'},
-	      		{kind: "TideToolButton", icon: 'images/undo.png', onclick: 'undo'},
-	      		{kind: "TideToolButton", icon: 'images/redo.png', onclick: 'redo'},
-	      		//{width: '16px'},
-	      		//{icon: 'images/search.png', onclick: 'toggleSearch'},
+	      		{kind: "TideToolButton", icon: 'images/new/undo.png', onclick: 'undo'},
+	      		{kind: "TideToolButton", icon: 'images/new/redo.png', onclick: 'redo'},
+	      		{width: '20px'},
+	      		{kind: "TideToolButton", icon: 'images/new/search.png', onclick: 'toggleSearch'},
 				{flex:1},
 				
 				{
@@ -84,26 +196,29 @@ enyo.kind({
 			},
 			{
 				layoutKind: 'VFlexLayout', align: 'end', components: [
-					{kind: "TideToolButton", style: 'margin-right: -4px;', icon: 'images/arrow_up.png', onclick: "pgUp"},
+					{kind: "TideToolButton", style: 'margin-right: -4px;', icon: 'images/new/arrow_up.png', onclick: "pgUp"},
 					{kind: 'VSlider', name: 'slider', width: '28px', onChanging: 'sliderChange', onChange: 'sliderChange'},
-					{kind: "TideToolButton", style: 'margin-right: -4px;', icon: 'images/arrow_down.png', onclick: "pgDown"},
+					{kind: "TideToolButton", style: 'margin-right: -4px;', icon: 'images/new/arrow_down.png', onclick: "pgDown"},
 				]
 			}
-		]},
-		{
-			kind: 'Toolbar',
-			name: 'searchbar',
-			showing: false,
-			className: 'enyo-toolbar-light',
-			components: [
-				{kind: 'Input', alwaysLooksFocused: true, hint: $L('Find'), flex: 1},
-				{caption: 'Find'},
-				{kind: 'Input', alwaysLooksFocused: true, hint: $L('Replace'), flex: 1},
-				{caption: 'Replace'},
-				{caption: 'Replace All'},
-			]
-		}
+		]}
   	],
+  	
+  	stChange: function() {
+		if (this.$.searchText.value && this.$.replaceText.value) {
+			this.$.searchButton.setDisabled(false)
+			this.$.replaceButton.setDisabled(false)
+			this.$.replaceAllButton.setDisabled(false)
+		} else if (this.$.searchText.value) {
+			this.$.searchButton.setDisabled(false)
+			this.$.replaceButton.setDisabled(true)
+			this.$.replaceAllButton.setDisabled(true)
+		} else {
+			this.$.searchButton.setDisabled(true)
+			this.$.replaceButton.setDisabled(true)
+			this.$.replaceAllButton.setDisabled(true)
+		}
+	},
   	
   	sliderChange: function(inSender, percent) {
   		this.$.editor.scrollByPercent(percent/100,window.innerHeight-89)
@@ -181,7 +296,11 @@ enyo.kind({
   	},
   	
   	toggleSearch: function() {
-  		this.$.searchbar.setShowing(!this.$.searchbar.showing)
+		this.$.search.openAtTopCenter()
+  	},
+  	
+  	closeSearch: function() {
+		this.$.search.close()
   	},
   	
   	preferences: function() {
@@ -218,11 +337,11 @@ enyo.kind({
   	},
   	
   	resizeListener: function() {
-  		this.$.slider.$.progress.applyStyle('height', (window.innerHeight-148)+'px')
-  		this.$.editor.refresh(
-  			(window.innerWidth-28)+'px',
-  			(window.innerHeight-40)+'px',
-  			this.prefs.get('fontSize')
+		this.$.slider.$.progress.applyStyle('height', (window.innerHeight-148)+'px')
+		this.$.editor.refresh(
+			(window.innerWidth-28)+'px',
+			(window.innerHeight-40)+'px',
+			this.prefs.get('fontSize')
 		)
   		this.$.editor.resizeRenderer()
   	},
@@ -312,6 +431,38 @@ enyo.kind({
 	
 	pgUp: function() {
 		this.$.editor.pgUp()
+	},
+	
+	search: function() {
+		var newSearch = false
+		var options = {
+			backwards: this.$.searchBackwards.checked,
+			wrap: this.$.searchWrap.checked,
+			caseSensitive: this.$.searchCaseSensitive.checked,
+			wholeWord: this.$.searchWholeWord.checked,
+			regExp: this.$.searchRegExp.checked
+		}
+		if (this.$.searchText.value != this.currentSearchTerm) {
+			this.currentSearchTerm = this.$.searchText.value
+			newSearch = true
+		} else if (this.currentSearchOptions != options) {
+			this.currentSearchOptions = options
+			newSearch = true
+		}
+		if (newSearch)
+			this.$.editor.find(this.currentSearchTerm, this.currentSearchOptions)
+		else
+			this.$.editor.findNext()
+	},
+	
+	replace: function() {
+		this.search()
+		this.$.editor.replace(this.$.replaceText.value)
+	},
+	
+	replaceAll: function() {
+		this.search()
+		this.$.editor.replaceAll(this.$.replaceText.value)
 	},
 	
 })
